@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content> 
+  <ion-img class="icon" src="assets/img/profile-male.png" ></ion-img>
+  <ion-item>
+    <ion-label position="floating">Email</ion-label>
+    <ion-input type="text" name="email" [(ngModel)]="Email"> </ion-input>
+  </ion-item>
+ 
+  <ion-item>
+    <ion-label position="floating">Clave</ion-label>
+    <ion-input type="password" name="password" [(ngModel)]="Pwd"> </ion-input>
+  </ion-item>
+
+  <ion-button expand="block" (click)="OnSubmitLogin()">
+    Ingresar
+  </ion-button>
+</ion-content>
