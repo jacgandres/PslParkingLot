@@ -16,9 +16,7 @@ export class AuthGuard implements CanActivate {
   
   canActivate( next:ActivatedRouteSnapshot,  state:RouterStateSnapshot ):Observable<boolean>|Promise<boolean>|boolean
   { 
-    return this.AFAuth.authState.pipe(map(auth=>{
-          
-          console.log("Auth: " + JSON.stringify(auth));
+    return this.AFAuth.authState.pipe(map(auth=>{ 
           if(isNullOrUndefined(auth))
           {
              this.router.navigate(['login']);

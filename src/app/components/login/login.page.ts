@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthServiceService } from "../../services/auth-service.service";
 import { Router } from "@angular/router";
+import { DbServiceService } from "../../services/db-service.service";
+import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'app-login',
@@ -13,9 +15,16 @@ export class LoginPage implements OnInit {
   Pwd:string;
 
 
-  constructor(private router:Router, private authService:AuthServiceService) { }
+  constructor(private router:Router, private authService:AuthServiceService, private dbLocalService:DbServiceService) { }
 
-  ngOnInit() {
+  ngOnInit() { 
+    this.dbLocalService.GetUser().then(result=>{ 
+      if(!isNullOrUndefined(result))
+      {
+        this.Email = result.email;
+        this.Pwd = result.pwd;
+      }
+    })
   }
 
   OnSubmitLogin(){ 

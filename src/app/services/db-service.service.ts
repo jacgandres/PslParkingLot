@@ -13,6 +13,7 @@ export class DbServiceService {
 
   GetUser():Promise<User>{
     let user:User;
+    
 
     if (this.platform.is('cordova')) {
       return new Promise((resolve,reject) =>{
@@ -26,8 +27,12 @@ export class DbServiceService {
     }
     else{
       return new Promise((resolve,reject) =>{
-        user = JSON.parse( localStorage.getItem('Usuario'));
-        resolve(user); 
+        try {
+          user = JSON.parse( localStorage.getItem('Usuario'));
+          resolve(user); 
+        } catch (error) {
+          reject(error);
+        }
       });       
     }
   }

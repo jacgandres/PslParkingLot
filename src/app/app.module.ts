@@ -12,6 +12,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { FireBaseConfig } from "../environments/environment";
 import { AngularFireModule } from "@angular/fire";
 import { AngularFireAuthModule } from "@angular/fire/auth";
+import { AngularFireDatabaseModule } from "@angular/fire/database";
+
+import { DatePipe } from '@angular/common'
+
+import { NativeStorage } from '@ionic-native/native-storage/ngx'; 
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,11 +26,14 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
     IonicModule.forRoot(),
     AppRoutingModule,
     AngularFireModule.initializeApp(FireBaseConfig),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AngularFireDatabaseModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    DatePipe,
+    NativeStorage,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
