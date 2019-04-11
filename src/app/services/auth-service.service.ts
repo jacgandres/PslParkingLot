@@ -19,8 +19,8 @@ export class AuthServiceService {
         var user:User = new Object();
         
         user.UserId = result.user.uid;
-        user.email = result.user.email;
-        user.pwd = pwd;
+        user.Email = result.user.email;
+        user.Pwd = pwd;
 
         this.dbService.GetUser(user).then(result => { 
           this.dbLocalService.SetUser(result) ;
