@@ -25,14 +25,24 @@
             <ion-label position="floating">Email</ion-label>
             <ion-input type="text" formControlName="Email" > </ion-input>
           </ion-item>
-        
+          <ion-item-divider *ngIf="!formgroup.get('loginDetails').get('Email').valid &&
+                                    formgroup.get('loginDetails').get('Email').touched">
+              <ion-label color="danger">Por favor ingrese un email en el formato correcto</ion-label>
+          </ion-item-divider> 
           <ion-item>
             <ion-label position="floating">Clave</ion-label>
             <ion-input type="password" formControlName="Password" > </ion-input>
           </ion-item>
+          <ion-item-divider *ngIf="!formgroup.get('loginDetails').get('Password').valid &&
+                                    formgroup.get('loginDetails').get('Password').touched">
+              <ion-label color="danger">La clave debe tener al menos 6 caracteres</ion-label>
+          </ion-item-divider> 
       </fieldset>
       <ion-button expand="block" (click)="OnSubmitLogin()" [disabled]="formgroup.invalid">
         Ingresar
+      </ion-button>
+      <ion-button expand="block" (click)="erros()" [disabled]="!formgroup.invalid">
+        errors
       </ion-button>
   </form>
 </ion-content>
