@@ -4,7 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User } from '../../models/User';
 
 import { DbServiceService, AuthServiceService, DbFireBaseServiceService } from "../../services/export-services";
-import { cleanSession } from 'selenium-webdriver/safari';
+import { ToastModule } from "../../modules/toast/toast.module";
 
 @Component({
   selector: 'app-register',
@@ -18,6 +18,7 @@ export class RegisterPage implements OnInit {
   constructor(private router: Router,
     private dbLocal: DbServiceService,
     private authService: AuthServiceService,
+    private toast:ToastModule,
     private dbFire: DbFireBaseServiceService) {
 
     var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -95,6 +96,7 @@ export class RegisterPage implements OnInit {
       this.dbFire.SetUser(usr).then(result =>{ 
           this.dbLocal.SetUser(result); 
           this.cleanForm();
+          this.toast.presentToast(registerUser.FirstName + " " + registerUser.LastName + " has ingresado correctamente.");
           this.router.navigate(['home']);
       }).catch(exc =>{
 
