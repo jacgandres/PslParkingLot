@@ -25,11 +25,12 @@ export class DbFireBaseServiceService {
 
   GetUser(user:User)
   { 
-    return new Promise((assert,reject)=>{ 
+    return new Promise((assert)=>{ 
          let strRef ="/Users/"+user.UserId;
          this.subscriptionUser =  this.afDB.object(strRef)
                                 .valueChanges()
                                 .subscribe(snapshot =>{ 
+                                    
                                     if(isNullOrUndefined(snapshot))
                                     {
                                       this.SetUser(user).then(result =>{

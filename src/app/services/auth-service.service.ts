@@ -48,9 +48,12 @@ export class AuthServiceService {
             user.UserId = result.user.uid;
             user.Email = result.user.email;
             user.Pwd = pwd;
-    
-            this.dbLocalService.SetUser(user) ;
-            resolve(user);  
+            
+            this.dbService.GetUser(user).then(result =>{
+                
+                this.dbLocalService.SetUser(result) ;
+                resolve(result);  
+            })
         }).catch(exc =>{
           console.log("Error "+exc);
           reject(exc);
