@@ -11,22 +11,29 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: './home/home.module#HomePageModule',
-    canActivate:[AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'list',
     loadChildren: './list/list.module#ListPageModule',
-    canActivate:[AuthGuard]
+    canActivate: [AuthGuard]
   },
-  { 
-    path: 'login', 
+  {
+    path: 'login',
     loadChildren: './components/login/login.module#LoginPageModule',
-    canActivate:[NoLoginGuard]
- },
-  { path: 'logout', 
-  loadChildren: './components/logout/logout.module#LogoutPageModule',
-  canActivate:[AuthGuard] 
-}
+    canActivate: [NoLoginGuard]
+  },
+  {
+    path: 'logout',
+    loadChildren: './components/logout/logout.module#LogoutPageModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'register',
+    loadChildren: './components/register/register.module#RegisterPageModule',
+    canActivate: [NoLoginGuard]
+  }
+
 ];
 
 @NgModule({
@@ -35,4 +42,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

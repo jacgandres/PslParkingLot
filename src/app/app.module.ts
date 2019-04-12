@@ -17,13 +17,14 @@ import { AngularFireDatabaseModule } from "@angular/fire/database";
 import { DatePipe } from '@angular/common'
 
 import { NativeStorage } from '@ionic-native/native-storage/ngx'; 
+  
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot(),  
     AppRoutingModule,
     AngularFireModule.initializeApp(FireBaseConfig),
     AngularFireAuthModule,
