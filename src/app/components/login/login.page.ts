@@ -3,7 +3,8 @@ import { AuthServiceService } from "../../services/auth-service.service";
 import { Router } from "@angular/router";
 import { DbServiceService } from "../../services/db-service.service";
 import { isNullOrUndefined } from 'util';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms'; 
+import { ToastModule } from "../../modules/toast/toast.module";
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,9 @@ export class LoginPage implements OnInit {
   public formgroup: FormGroup;
 
 
-  constructor(private router: Router, private authService: AuthServiceService, private dbLocalService: DbServiceService) {
+  constructor(private router: Router, private authService: AuthServiceService, 
+              private dbLocalService: DbServiceService, private toast:ToastModule) {
+
     var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     this.formgroup = new FormGroup({
       loginDetails: new FormGroup({
@@ -40,6 +43,7 @@ export class LoginPage implements OnInit {
 
     console.log("Entro al login");
     this.authService.LogIn(this.formgroup.value.loginDetails.Email, this.formgroup.value.loginDetails.Password).then(resp => {
+      this.toast.presentToast(resp.FirstName + " " + resp.LastName + " has ingresado correctamente.");
       this.router.navigate(['home']);
     }).catch(err => { alert("Datos incorrectos o no existe el usuario") });
   }
