@@ -6,7 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { RegisterPage } from './register.page';
-
+import { ToastModule } from "../../modules/toast/toast.module";
 
 const routes: Routes = [
   {
@@ -20,6 +20,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule, ReactiveFormsModule ,
     IonicModule,
+    ToastModule,
     RouterModule.forChild(routes)
   ],
   declarations: [RegisterPage]
