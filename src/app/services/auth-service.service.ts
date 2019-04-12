@@ -31,7 +31,7 @@ export class AuthServiceService {
   }
 
 
-  LogIn(email:string, pwd:string)
+  LogIn(email:string, pwd:string):Promise<User>
   { 
     return new Promise((resolve,reject)=>{
       this.AFAuth.auth.signInWithEmailAndPassword(email,pwd).then(result=>{ 
