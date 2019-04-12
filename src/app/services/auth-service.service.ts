@@ -34,22 +34,19 @@ export class AuthServiceService {
   LogIn(email: string, pwd: string): Promise<User> {
     return new Promise((resolve, reject) => {
       this.AFAuth.auth.signInWithEmailAndPassword(email, pwd).then(result => {
-        console.log("Se logueo perfectamente ");
+        console.log('Se logueo perfectamente '); 
+        let user: User = new Object();
+        user.UserId = result.user.uid;
 
-        this.dbLocalService.GetUser().then(usr => {
-          var user: User = new Object();
-
+        this.dbService.GetUser(user).then(usr => {
+          
           if (!isNullOrUndefined(usr)) {
-            user = usr; 
+            user = usr;
             user.UserId = result.user.uid;
+            user.Pwd = pwd;
 
-            this.dbService.GetUser(user).then(response => {
-              user = response;
-              user.Pwd = pwd;
-
-              this.dbLocalService.SetUser(user);
-              resolve(user);
-            })
+            this.dbLocalService.SetUser(user); 
+            resolve(user);
           }
         }).catch(exc => {
           console.log("Error " + exc);

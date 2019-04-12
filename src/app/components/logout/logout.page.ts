@@ -21,6 +21,7 @@ export class LogoutPage implements OnInit {
   { 
     this.authService.LogOut().then( response =>{
       this.dbLocalService.GetUser().then(usr =>{
+          
           this.toast.presentToast(usr.FirstName + " " + usr.LastName + " has salido correctamente.");
           this.dbLocalService.CleanUser();
           this.router.navigate(['login']);

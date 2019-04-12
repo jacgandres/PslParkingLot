@@ -19,7 +19,7 @@ export class NoLoginGuard implements  CanActivate {
   { 
     return this.AFAuth.authState.pipe(map(auth=>{
           
-          console.log("LogIn: " + JSON.stringify(auth));
+          console.log("User Loged");
           if(isNullOrUndefined(auth))
           {
              return true;  

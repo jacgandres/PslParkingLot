@@ -43,6 +43,7 @@ export class LoginPage implements OnInit {
 
     console.log("Entro al login");
     this.authService.LogIn(this.formgroup.value.loginDetails.Email, this.formgroup.value.loginDetails.Password).then(resp => {
+      
       this.toast.presentToast(resp.FirstName + " " + resp.LastName + " has ingresado correctamente.");
       this.router.navigate(['home']);
     }).catch(err => { alert("Datos incorrectos o no existe el usuario") });
