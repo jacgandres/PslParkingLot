@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { LogoutPage } from './logout.page';
+import { ToastModule } from "../../modules/toast/toast.module";
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    ToastModule,
     RouterModule.forChild(routes)
   ],
   declarations: [LogoutPage]
