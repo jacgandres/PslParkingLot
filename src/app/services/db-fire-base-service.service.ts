@@ -25,11 +25,12 @@ export class DbFireBaseServiceService {
 
   GetUser(user:User)
   { 
-    return new Promise((assert,reject)=>{ 
+    return new Promise((assert)=>{ 
          let strRef ="/Users/"+user.UserId;
          this.subscriptionUser =  this.afDB.object(strRef)
                                 .valueChanges()
                                 .subscribe(snapshot =>{ 
+                                    
                                     if(isNullOrUndefined(snapshot))
                                     {
                                       this.SetUser(user).then(result =>{
@@ -50,10 +51,17 @@ export class DbFireBaseServiceService {
   SetUser(user:User)
   {
     return new Promise((assert,reject)=>{ 
-      let strRef ="/Users/"+user.UserId;
-      this.afDB.object(strRef).set(user).then(() =>{ 
-        assert(user);
-      });
+        
+        let strRef ="/Users/"+user.UserId;
+        this.afDB.object(strRef).set(user).then(() =>{ 
+            
+            console.log("Se adiciono correctamente");
+            assert(user);
+        }).catch(error =>{
+            
+            console.log("No se adiciono correctamente");
+            reject(error);
+        });
     });
   }
 
