@@ -23,7 +23,7 @@ export class DbFireBaseServiceService {
     this.dateTime =this.datepipe.transform(new Date(), 'MM-dd-yyyy');
    }
 
-  GetUser(user:User)
+  GetUser(user:User):Promise<User>
   { 
     return new Promise((assert)=>{ 
          let strRef ="/Users/"+user.UserId;
