@@ -1,7 +1,8 @@
 export interface User {
+    UserId?: string;
+    Photo?:string;
     FirstName?:string;
     LastName?:string;
-    UserId?: string;
     Email?: string;
     Pwd?: string;  
     Phone?: string; 
@@ -9,5 +10,4 @@ export interface User {
     Plate?:string;
     Brand?:string;
     Color?:string;
-    Photo?:string;
 }

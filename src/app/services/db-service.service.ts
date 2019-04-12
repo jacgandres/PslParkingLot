@@ -39,6 +39,7 @@ export class DbServiceService {
   }
 
   SetUser(user:User){
+    
     if (this.platform.is('cordova')) {
       this.nativeStorage.setItem('User', JSON.stringify(user));
     }

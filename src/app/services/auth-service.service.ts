@@ -9,8 +9,27 @@ import { isNullOrUndefined } from 'util';
   providedIn: 'root'
 })
 export class AuthServiceService {
-
+  
   constructor(private AFAuth:AngularFireAuth, private dbService:DbFireBaseServiceService, private dbLocalService:DbServiceService ) { }
+
+  
+  SignUp(registerUser: User) {
+    return new Promise((resolve,reject)=>{
+        
+        this.AFAuth.auth.createUserWithEmailAndPassword(registerUser.Email, registerUser.Pwd).then(usr =>{
+            
+            console.log("Se registro correctamente")
+            registerUser.UserId = usr.user.uid;
+
+            resolve(registerUser);
+        }).catch(error =>{
+            console.log("Hubo un error: "+ error);
+            
+            reject(error);
+        });
+    });
+  }
+
 
   LogIn(email:string, pwd:string)
   { 

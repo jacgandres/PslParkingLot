@@ -50,10 +50,17 @@ export class DbFireBaseServiceService {
   SetUser(user:User)
   {
     return new Promise((assert,reject)=>{ 
-      let strRef ="/Users/"+user.UserId;
-      this.afDB.object(strRef).set(user).then(() =>{ 
-        assert(user);
-      });
+        
+        let strRef ="/Users/"+user.UserId;
+        this.afDB.object(strRef).set(user).then(() =>{ 
+            
+            console.log("Se adiciono correctamente");
+            assert(user);
+        }).catch(error =>{
+            
+            console.log("No se adiciono correctamente");
+            reject(error);
+        });
     });
   }
 
