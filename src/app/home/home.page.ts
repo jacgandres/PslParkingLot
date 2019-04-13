@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { User } from '../models/User';
 import { DbServiceService, DbFireBaseParkingUsageService, DbFireBaseParkingService } from "../services/export-services";
 import { ParkingUsage, Parking } from '../models/export-models';  
+import { CommonMethodsModule } from '../modules/common-methods/common-methods.module';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +17,8 @@ export class HomePage {
 
   constructor(private router: Router, 
               private dbFireServiceUsage: DbFireBaseParkingUsageService,
-              private dbFireServiceParking: DbFireBaseParkingService,
+              private dbFireServiceParking: DbFireBaseParkingService, 
+              private commonMethods: CommonMethodsModule,
               private localDb: DbServiceService) {
 
     this.usagesParking =
@@ -28,7 +30,7 @@ export class HomePage {
   }
 
   ngOnInit() {
-    console.log("ngOnInit");
+      this.commonMethods.ConsoleLog("Entro ngOnInit:" , {});
 
       this.localDb.GetUser().then(usr => {
         this.user = usr;
@@ -37,10 +39,13 @@ export class HomePage {
   }
 
   GetParkingUsage() {
+    this.commonMethods.ConsoleLog("Entro GetParkingUsage:" , {});
 
     this.dbFireServiceParking.GetParkings(this.user).then(parkings  =>{
+        this.commonMethods.ConsoleLog("Entro dbFireServiceParking.GetParkings:" , {});
         this.dbFireServiceUsage.GetParkingUsage(this.user).then(result => {
-             
+
+            this.commonMethods.ConsoleLog("Entro dbFireServiceUsage.GetParkingUsage:" , {});
             this.usagesParking = result; 
 
             this.usagesParking.Free = parkings.length - result.Used;

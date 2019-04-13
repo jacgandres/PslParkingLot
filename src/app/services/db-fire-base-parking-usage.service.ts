@@ -32,19 +32,19 @@ export class DbFireBaseParkingUsageService {
         .valueChanges()
         .subscribe(snapshot => { 
           
+          this.commonMethods.ConsoleLog("Entro GetParkingUsage:" , snapshot);
+
           let list: any[] = this.commonMethods.ConvertObjectToArray(snapshot);
 
           list = list.filter(item => item.BranchId == Usr.BranchId);
 
-          list.forEach(function (value) {
-
+          list.forEach(function (value) { 
             if (value.IsParked) {
               parkingUsage.Used++;
             }
             else {
               parkingUsage.Free++;
-            }
-            console.log(JSON.stringify(value));
+            } 
           });
 
           this.subscriptionDate.unsubscribe();

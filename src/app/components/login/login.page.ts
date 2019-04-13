@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthServiceService, DbServiceService } from "../../services/export-services";
-import { Router } from "@angular/router"; 
+import { Router, ActivatedRoute } from "@angular/router"; 
 import { isNullOrUndefined } from 'util';
 import { FormGroup, FormControl, Validators } from '@angular/forms'; 
 import { ToastModule } from "../../modules/toast/toast.module";
+import { CommonMethodsModule } from 'src/app/modules/common-methods/common-methods.module';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -15,8 +17,8 @@ export class LoginPage implements OnInit {
   public formgroup: FormGroup;
 
 
-  constructor(private router: Router, private authService: AuthServiceService, 
-              private dbLocalService: DbServiceService, private toast:ToastModule) {
+  constructor(private router: Router,private route: ActivatedRoute, private authService: AuthServiceService,  private platform: Platform,
+              private dbLocalService: DbServiceService, private toast:ToastModule, private commonMethods: CommonMethodsModule) {
 
     var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     this.formgroup = new FormGroup({
@@ -27,10 +29,27 @@ export class LoginPage implements OnInit {
         Password: new FormControl('', [Validators.required, Validators.minLength(6)])
       })
     });
+
+    this.route.queryParams.subscribe(params => {
+      this.commonMethods.ConsoleLog("this.route.queryParams" , params);
+      if (params && params.special) {
+        let parameter = JSON.parse(params.special);
+        if(parameter.CleanUser == true)
+        {
+           dbLocalService.CleanUser();
+           this.exitApp();
+        }
+      }
+    });
+  }
+
+  exitApp(){
+    navigator['app'].exitApp();
   }
 
   ngOnInit() {
     this.dbLocalService.GetUser().then(result => {
+      this.commonMethods.ConsoleLog("ngOnInit this.dbLocalService.GetUser()" , result);
       if (!isNullOrUndefined(result)) {
         this.formgroup.controls['loginDetails'].get("Email").setValue(result.Email);
         this.formgroup.controls['loginDetails'].get("Password").setValue(result.Pwd);
@@ -40,7 +59,7 @@ export class LoginPage implements OnInit {
 
   OnSubmitLogin() {
 
-    console.log("Entro al login");
+    this.commonMethods.ConsoleLog("OnSubmitLogin" , {});
     this.authService.LogIn(this.formgroup.value.loginDetails.Email, this.formgroup.value.loginDetails.Password).then(resp => {
        
       this.toast.presentToast(resp.FirstName + " " + resp.LastName + ", has ingresado correctamente.");

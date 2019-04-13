@@ -20,7 +20,7 @@ export class DbFireBaseParkingService {
       this.subscriptionUser = this.afDB.object(strRef)
         .valueChanges()
         .subscribe(snapshot => { 
-            
+            this.commonMethods.ConsoleLog("Entro GetParkings:" , snapshot);
             let list: Parking[] = this.commonMethods.ConvertObjectToArray(snapshot);
 
             list = list.filter(item => item.BranchId == Usr.BranchId);

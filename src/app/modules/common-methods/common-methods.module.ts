@@ -21,4 +21,9 @@ export class CommonMethodsModule {
     return resultArray;
   }
 
+  public ConsoleLog(message:string, value:any)
+  {
+    //debugger;
+    console.log(message +": "+ JSON.stringify(value));
+  }
 }

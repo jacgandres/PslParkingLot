@@ -29,7 +29,7 @@ export class DbFireBaseServiceService {
       this.subscriptionUser = this.afDB.object(strRef)
         .valueChanges()
         .subscribe(snapshot => {
-
+          this.commonMethods.ConsoleLog("GetUser afDB.object" , snapshot);
           if (isNullOrUndefined(snapshot)) {
             this.SetUser(user).then(result => {
               this.subscriptionUser.unsubscribe();
@@ -49,11 +49,11 @@ export class DbFireBaseServiceService {
     return new Promise((assert, reject) => {
       let strRef = "/Users/" + user.UserId;
       this.afDB.object(strRef).set(user).then(() => {
-        console.log("Se adiciono correctamente");
+        this.commonMethods.ConsoleLog("SetUser afDB.object" , {});
         assert(user);
       }).catch(error => {
 
-        console.log("No se adiciono correctamente");
+        this.commonMethods.ConsoleLog("SetUser afDB.object error" , error);
         reject(error);
       });
     });
@@ -66,6 +66,8 @@ export class DbFireBaseServiceService {
       this.subscriptionBranch = this.afDB.object(strRef)
         .valueChanges()
         .subscribe(snapshot => {
+
+          this.commonMethods.ConsoleLog("GetBranches afDB.object" , snapshot);
           let list: Branch[] = this.commonMethods.ConvertObjectToArray(snapshot);
           this.subscriptionBranch.unsubscribe();
           resolve(list);
