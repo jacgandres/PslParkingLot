@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthServiceService } from "../../services/auth-service.service";
-import { Router } from "@angular/router";
-import { DbServiceService } from "../../services/db-service.service";
+import { AuthServiceService, DbServiceService } from "../../services/export-services";
+import { Router } from "@angular/router"; 
 import { isNullOrUndefined } from 'util';
 import { FormGroup, FormControl, Validators } from '@angular/forms'; 
 import { ToastModule } from "../../modules/toast/toast.module";
@@ -43,9 +42,9 @@ export class LoginPage implements OnInit {
 
     console.log("Entro al login");
     this.authService.LogIn(this.formgroup.value.loginDetails.Email, this.formgroup.value.loginDetails.Password).then(resp => {
-      
-      this.toast.presentToast(resp.FirstName + " " + resp.LastName + " has ingresado correctamente.");
-      this.router.navigate(['home']);
+       
+      this.toast.presentToast(resp.FirstName + " " + resp.LastName + ", has ingresado correctamente.");
+      this.router.navigate(['home'],{queryParams: resp});
     }).catch(err => { alert("Datos incorrectos o no existe el usuario") });
   }
 

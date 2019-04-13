@@ -1,18 +1,21 @@
-import {AngularFireDatabase, snapshotChanges, AngularFireAction } from '@angular/fire/database'; 
+import {AngularFireDatabase  } from '@angular/fire/database'; 
 import { DatePipe } from '@angular/common'
 
 import {Injectable }from '@angular/core'; 
 import { isNullOrUndefined } from 'util';
-import { User } from '../models/User';
-import { Subscription } from 'rxjs/internal/Subscription';
+import { User, Branch, ParkingUsage } from '../models/export-models';
+import { Subscription } from 'rxjs/internal/Subscription'; 
 
 @Injectable({
   providedIn: 'root'
 })
 export class DbFireBaseServiceService {
   
+
   private dateTime:string;
   private subscriptionUser:Subscription;
+  private subscriptionDate:Subscription;
+  private subscriptionBranch:Subscription;
 
   constructor(private afDB:AngularFireDatabase,public datepipe: DatePipe) 
   {  
@@ -50,11 +53,9 @@ export class DbFireBaseServiceService {
 
   SetUser(user:User)
   {
-    return new Promise((assert,reject)=>{ 
-        
+    return new Promise((assert,reject)=>{  
         let strRef ="/Users/"+user.UserId;
-        this.afDB.object(strRef).set(user).then(() =>{ 
-            
+        this.afDB.object(strRef).set(user).then(() =>{  
             console.log("Se adiciono correctamente");
             assert(user);
         }).catch(error =>{
@@ -65,4 +66,43 @@ export class DbFireBaseServiceService {
     });
   }
 
+  GetParkingUsage():Promise<ParkingUsage> {
+      return new Promise((assert)=>{
+          let strRef ="/Dates/"+ this.dateTime;
+          this.subscriptionDate =  this.afDB.object(strRef)
+                                .valueChanges()
+                                .subscribe(snapshot =>{  
+                                  debugger;
+                                  /*
+                                    snapshot.forEach(function (value) {
+                                        console.log(value);
+                                    });
+                                  */
+                                }); 
+      });
+  }
+  
+  GetBranches():Promise<Branch[]> {
+      return new Promise((resolve) =>{
+      
+          let strRef ="/Branches"
+          this.subscriptionBranch =  this.afDB.object(strRef)
+                                  .valueChanges()
+                                  .subscribe(snapshot =>{ 
+                                       
+                                      let list:Branch[] = this.ConvertObjectBranchToArray(snapshot);
+                                      this.subscriptionBranch.unsubscribe();
+                                      resolve(list);
+                                  });
+      });
+  }
+
+  ConvertObjectBranchToArray(snapshot:any){ 
+    var resultArray = Object.keys(snapshot).map(function(branchIndex){ 
+            let branches = snapshot[branchIndex]; 
+            return branches;
+      });
+ 
+    return resultArray;
+  }
 }
