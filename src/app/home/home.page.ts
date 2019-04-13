@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { User } from '../models/User';
-import { DbFireBaseServiceService } from "../services/export-services";
-import { ParkingUsage } from '../models/ParkingUsage';
+import { DbServiceService, DbFireBaseParkingUsageService, DbFireBaseParkingService } from "../services/export-services";
+import { ParkingUsage, Parking } from '../models/export-models';  
 
 @Component({
   selector: 'app-home',
@@ -11,37 +11,45 @@ import { ParkingUsage } from '../models/ParkingUsage';
 })
 export class HomePage {
 
-  private user:User;
+  private user: User;
   private usagesParking: ParkingUsage;
 
-  constructor(private router:Router, private activateRoute:ActivatedRoute, private dbFireService:DbFireBaseServiceService){
-      
-      this.usagesParking =
+  constructor(private router: Router, 
+              private dbFireServiceUsage: DbFireBaseParkingUsageService,
+              private dbFireServiceParking: DbFireBaseParkingService,
+              private localDb: DbServiceService) {
+
+    this.usagesParking =
       {
-        Free : 0,
-        Used : 0
+        Free: 0,
+        Used: 0
       }
-
-      this.activateRoute.queryParams.subscribe((data)=>{           
-          console.log("QueryParams " + JSON.stringify(data));
-          this.user = data;
-      });
-
-      //this.GetParkingList();
+     
   }
 
-  ngOnInit(){
+  ngOnInit() {
     console.log("ngOnInit");
-    this.GetParkingUsage();
-  }
 
-  GetParkingUsage(){ 
-      this.dbFireService.GetParkingUsage().then(result =>{
-          this.usagesParking = result;
+      this.localDb.GetUser().then(usr => {
+        this.user = usr;
+        this.GetParkingUsage();
       });
   }
 
-  GetParkingList(){
-      this.router.navigate(["parking-list"]);
+  GetParkingUsage() {
+
+    this.dbFireServiceParking.GetParkings(this.user).then(parkings  =>{
+        this.dbFireServiceUsage.GetParkingUsage(this.user).then(result => {
+             
+            this.usagesParking = result; 
+
+            this.usagesParking.Free = parkings.length - result.Used;
+        });
+    });
+
+  }
+
+  GetParkingList() {
+    this.router.navigate(["parking-list"]);
   }
 }

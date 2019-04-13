@@ -8,7 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-
+import { CommonMethodsModule } from "../app/modules/common-methods/common-methods.module";
 import { FireBaseConfig } from "../environments/environment";
 import { AngularFireModule } from "@angular/fire";
 import { AngularFireAuthModule } from "@angular/fire/auth";
@@ -28,7 +28,8 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
     AppRoutingModule,
     AngularFireModule.initializeApp(FireBaseConfig),
     AngularFireAuthModule,
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    CommonMethodsModule
   ],
   providers: [
     StatusBar,

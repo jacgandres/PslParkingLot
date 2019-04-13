@@ -86,7 +86,7 @@ export class RegisterPage implements OnInit {
   }
 
   Register() {
-    debugger;
+    
     var registerUser: User;
 
     registerUser = { 
