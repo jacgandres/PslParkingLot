@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar  color="primary">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -10,5 +10,65 @@
 </ion-header>
 
 <ion-content>
-      
+  <br>
+  <fieldset>
+    <ion-item-sliding>
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <img src="../../assets/img/Parking-In.PNG">
+        </ion-thumbnail>
+        <ion-label>Registrar Parqueo</ion-label>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="primary">
+          <ion-label (click)="TakeSpot()">Parquear!</ion-label>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </fieldset>
+  <br>
+  <fieldset>
+    <ion-item-sliding>
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <img src="../../assets/img/Parking-Out.PNG">
+        </ion-thumbnail>
+        <ion-label>Liberar Parqueadero</ion-label>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="primary">
+          <ion-label (click)="BreakFreeSpot()">Liberar!</ion-label>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </fieldset>
+  <br>
+  <fieldset>
+    <ion-item-sliding>
+      <ion-item-options side="start">
+        <ion-item-option>
+          <ion-label (click)="GetAvailability('1')">Disponibles</ion-label>
+          <ion-badge color="success" slot="end">
+            {{usagesParking.Free}}
+          </ion-badge>
+        </ion-item-option>
+      </ion-item-options>
+
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <img src="../../assets/img/Parking-List.PNG">
+        </ion-thumbnail>
+        <ion-label>Ver Disponibilidad</ion-label>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option color="danger">
+          <ion-label (click)="GetAvailability('2')">Ocupados</ion-label>
+          <ion-badge color="light" slot="end">
+            {{usagesParking.Used}}
+          </ion-badge>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </fieldset>
 </ion-content>

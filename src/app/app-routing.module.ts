@@ -14,11 +14,6 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'list',
-    loadChildren: './list/list.module#ListPageModule',
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'login',
     loadChildren: './components/login/login.module#LoginPageModule',
     canActivate: [NoLoginGuard]
@@ -32,7 +27,19 @@ const routes: Routes = [
     path: 'register',
     loadChildren: './components/register/register.module#RegisterPageModule',
     canActivate: [NoLoginGuard]
+  },
+  {
+    path: 'profile',
+    loadChildren: './components/profile/profile.module#ProfilePageModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'parking-list',
+    loadChildren: './components/parking-list/parking-list.module#ParkingListPageModule',
+    canActivate: [AuthGuard]
   }
+
+
 
 ];
 
