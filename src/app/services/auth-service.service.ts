@@ -4,7 +4,8 @@ import { User } from '../models/User';
 import { DbFireBaseServiceService } from "../services/db-fire-base-service.service";
 import { DbServiceService } from "../services/db-service.service";
 import { isNullOrUndefined } from 'util';
-import { CommonMethodsModule } from '../modules/common-methods/common-methods.module';
+import { CommonMethodsModule } from '../modules/common-methods/common-methods.module'; 
+import { reject } from 'q';
 
 @Injectable({
   providedIn: 'root'
@@ -68,13 +69,24 @@ export class AuthServiceService {
 
     return new Promise((resolve, reject) => {
       this.AFAuth.auth.signOut().then(result => {
-        console.log("Se deslogueo perfectamente ");
+        this.commonMethods.ConsoleLog("Se deslogueo perfectamente ",{});
         resolve();
       }).catch(error => {
-        console.log("Error: " + error);
+        this.commonMethods.ConsoleLog("Error: " , error);
         reject(error);
       })
-    });
+    }); 
+  }
+  
+  RenovatePassword(email:string): any {
+    this.commonMethods.ConsoleLog("Funciono alert....",{});
+
+     return new Promise((resolve) =>{
+        this.AFAuth.auth.sendPasswordResetEmail(email).then(() => {
+            this.commonMethods.ConsoleLog("sendPasswordResetEmail ",{});
+            resolve(true);
+        })
+     })
 
   }
 }

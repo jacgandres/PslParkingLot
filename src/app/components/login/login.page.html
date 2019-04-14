@@ -10,7 +10,7 @@
         <ion-col size="6" class="register">
             <ion-chip (click)="Register()" color="light"> 
                 <ion-label>Registrarse</ion-label>
-                <ion-icon name="close-circle"></ion-icon>
+                <ion-icon name="person-add"></ion-icon>
             </ion-chip>
         </ion-col>
       </ion-row>
@@ -42,4 +42,16 @@
         Ingresar
       </ion-button> 
   </form>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="4"> 
+      </ion-col>
+      <ion-col size="8" class="renovate">
+          <ion-chip (click)="RenovatePassword()" > 
+             <ion-label>Recuperar Contraseña</ion-label>
+              <ion-icon name="paper-plane"></ion-icon>
+          </ion-chip>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

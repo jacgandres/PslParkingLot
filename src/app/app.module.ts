@@ -16,8 +16,7 @@ import { AngularFireDatabaseModule } from "@angular/fire/database";
 
 import { DatePipe } from '@angular/common'
 
-import { NativeStorage } from '@ionic-native/native-storage/ngx'; 
-  
+import { NativeStorage } from '@ionic-native/native-storage/ngx';  
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,7 +28,7 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
     AngularFireModule.initializeApp(FireBaseConfig),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    CommonMethodsModule
+    CommonMethodsModule 
   ],
   providers: [
     StatusBar,

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../models/User';
 import { DbServiceService, DbFireBaseParkingUsageService, DbFireBaseParkingService } from "../services/export-services";
-import { ParkingUsage, Parking } from '../models/export-models';  
+import { ParkingUsage } from '../models/export-models';  
 import { CommonMethodsModule } from '../modules/common-methods/common-methods.module';
 
 @Component({
@@ -40,7 +40,7 @@ export class HomePage {
 
   GetParkingUsage() {
     this.commonMethods.ConsoleLog("Entro GetParkingUsage:" , {});
-
+     
     this.dbFireServiceParking.GetParkings(this.user).then(parkings  =>{
         this.commonMethods.ConsoleLog("Entro dbFireServiceParking.GetParkings:" , {});
         this.dbFireServiceUsage.GetParkingUsage(this.user).then(result => {
@@ -55,6 +55,11 @@ export class HomePage {
   }
 
   GetParkingList() {
-    this.router.navigate(["parking-list"]);
+    console.log('Clicked')
+    /*this.router.navigate(["parking-list"]);*/
+  }
+
+  TakeSpot(){
+    this.router.navigate(["register-parking"]);
   }
 }
