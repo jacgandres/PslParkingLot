@@ -1,33 +1,21 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { CommonMethodsModule } from '../modules/common-methods/common-methods.module';
-import { Parking, User } from '../models/export-models'; 
+import {  User, Parking } from '../models/export-models'; 
 
 @Injectable({
   providedIn: 'root'
 })
 export class DbFireBaseParkingService {
-
-  private subscriptionUser: Subscription;
+ 
+  private parkingList : Parking[] = []; 
 
   constructor(private afDB: AngularFireDatabase, private commonMethods: CommonMethodsModule) { }
 
-  public GetParkings(Usr:User):Promise<Parking[]>{
-    
-    return new Promise((assert) => {
+  public GetParkings( ){
       let strRef = "/Parking/";
-      this.subscriptionUser = this.afDB.object(strRef)
-        .valueChanges()
-        .subscribe(snapshot => { 
-            this.commonMethods.ConsoleLog("Entro GetParkings:" , snapshot);
-            let list: Parking[] = this.commonMethods.ConvertObjectToArray(snapshot);
-
-            list = list.filter(item => item.BranchId == Usr.BranchId);
-            
-            this.subscriptionUser.unsubscribe();
-            assert(list);
-        });
-    })
+      return this.afDB.object(strRef).valueChanges();
   }
+ 
 }

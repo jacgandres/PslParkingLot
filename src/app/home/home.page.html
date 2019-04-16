@@ -54,7 +54,7 @@
         </ion-item-option>
       </ion-item-options>
 
-      <ion-item (click)="GetParkingList( )">
+      <ion-item tooltip="Gire a la derecha o izquierda para ver la disponibilidad" positionV="top">
         <ion-thumbnail slot="start">
           <img src="../../assets/img/Parking-List.PNG">
         </ion-thumbnail>
@@ -70,5 +70,23 @@
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
+  </fieldset>
+  <br>
+  <fieldset style="background-color: blue">
+    <ion-grid fixed>
+      <div *ngFor="let itemArray of spliceBranch">
+        <ion-row style="margin-left: 79px; margin-top: 20px">
+          <div *ngFor="let itemSubArray of itemArray">
+            <ion-col size="2" [ngClass]="itemSubArray.IsUsed? 'rowAvailabilityUsed' : 'rowAvailabilityFree'">
+              {{itemSubArray.ParkingNumber}}
+            </ion-col>
+            <ion-col size="1"> </ion-col>
+          </div>
+        </ion-row>
+        <ion-row style="margin-left: 20px">
+          <ion-col size="12"> </ion-col>
+        </ion-row>
+      </div>
+    </ion-grid>
   </fieldset>
 </ion-content>

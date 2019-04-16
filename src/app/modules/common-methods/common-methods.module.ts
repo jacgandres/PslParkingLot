@@ -14,9 +14,16 @@ export class CommonMethodsModule {
 
 
   public ConvertObjectToArray(snapshot: any) {
-    var resultArray = Object.keys(snapshot).map(function (arrayIndex) {
+     
+    var mapSnapshot = Object.keys(snapshot).map(function (arrayIndex) {
       let itemArray = snapshot[arrayIndex];
       return itemArray;
+    });
+    
+    var resultArray:Array<any>=[];
+
+    mapSnapshot.forEach(element => {
+      resultArray.push(element);
     });
 
     return resultArray;
