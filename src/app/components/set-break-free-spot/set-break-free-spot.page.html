@@ -21,13 +21,15 @@
 <ion-content>
   <ion-item-group>
     <ion-item>
-      <ion-thumbnail>
-        <img src="../../../assets/img/Parking-Out.PNG">
-      </ion-thumbnail>
-      <ion-label>Desea liberar el parqueadero ({{parking.ParkingNumber}})</ion-label>
-    </ion-item>
+        <ion-thumbnail>
+          <img src="../../../assets/img/Parking-Out.PNG">
+        </ion-thumbnail>
    
-    <ion-button (click)="onClick()" expand="block" color="primary">
+        <ion-text > <h3> Desea liberar el parqueadero ({{parking.ParkingNumber}})?</h3>
+        </ion-text> 
+    </ion-item>
+
+    <ion-button (click)="setBreakFreeSpot()" expand="block" color="primary" [disabled]="!isValid">
       Liberar!!
     </ion-button>
   </ion-item-group>

@@ -31,9 +31,8 @@ export class DbFireBaseParkingService {
     });
   }
 
-  GetParkingById(parkingId: string) {
-
-    return new Promise((resolve) => {
+  GetParkingById(parkingId: string) { 
+    return new Promise<Parking>((resolve) => {
       let strRef = "/Parking/" + parkingId;
       const ref = this.afDB.database.ref(strRef);
 

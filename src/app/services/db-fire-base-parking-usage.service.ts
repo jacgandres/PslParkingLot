@@ -27,13 +27,13 @@ export class DbFireBaseParkingUsageService {
       Free: 0,
       Used: 0
     }
-    
+
     return new Promise((assert) => {
       let strRef = "/Dates/" + this.dateTime;
       this.subscriptionDate = this.afDB.object(strRef)
         .valueChanges()
         .subscribe(snapshot => {
-           
+
           if (!isNullOrUndefined(snapshot)) {
             this.commonMethods.ConsoleLog("Entro GetParkingUsage ", snapshot);
 
@@ -48,25 +48,48 @@ export class DbFireBaseParkingUsageService {
               else {
                 parkingUsage.Free++;
               }
-            }); 
-          } 
+            });
+          }
           this.subscriptionDate.unsubscribe();
           assert(parkingUsage);
         });
     });
   }
 
-  SetDateUsedParking(parking:UsedParkingLot) {
+  SetDateUsedParking(parking: UsedParkingLot) {
     return new Promise((assert, reject) => {
-      let strRef = "/Dates/" + this.dateTime+"/"+parking.UserId;
+      let strRef = "/Dates/" + this.dateTime + "/" + parking.UserId;
       this.afDB.object(strRef).set(parking).then(() => {
-        this.commonMethods.ConsoleLog("SetDate afDB.object" , parking);
+        this.commonMethods.ConsoleLog("SetDate afDB.object", parking);
         assert({});
       }).catch(error => {
 
-        this.commonMethods.ConsoleLog("SetDate afDB.object error" , error);
+        this.commonMethods.ConsoleLog("SetDate afDB.object error", error);
         reject(error);
       });
     });
+  }
+
+  GetParkingUsageByUserId(UserId: string) {
+    return new Promise<UsedParkingLot>((resolve) => { 
+      let strRef = "/Dates/" + this.dateTime + "/" + UserId;
+      const ref = this.afDB.database.ref(strRef);
+
+      ref.on("value", snapshot => { 
+        let value = snapshot.val();
+        resolve(value);
+      })
+    })
+  }
+
+  
+  RemoveDateUsedParking(usedParkingLot: UsedParkingLot) {
+    return new Promise((resolve) =>{
+      let strRef = "/Dates/" + this.dateTime + "/" + usedParkingLot.UserId;
+
+      this.afDB.object(strRef).remove().then(() =>{
+        resolve(true);
+      })
+    })
   }
 }
