@@ -1,26 +1,26 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { RegisterParkingPage } from './register-parking.page';
+import { SetBreakFreeSpotPage } from './set-break-free-spot.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: RegisterParkingPage
+    component: SetBreakFreeSpotPage
   }
 ];
 
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule, ReactiveFormsModule,
+    FormsModule,
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [RegisterParkingPage]
+  declarations: [SetBreakFreeSpotPage]
 })
-export class RegisterParkingPageModule {}
+export class SetBreakFreeSpotPageModule {}

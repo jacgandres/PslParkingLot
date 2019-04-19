@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { User } from '../models/User';
 import { DbServiceService, DbFireBaseParkingUsageService, DbFireBaseParkingService } from "../services/export-services";
 import { ParkingUsage, Parking } from '../models/export-models';
-import { CommonMethodsModule } from '../modules/common-methods/common-methods.module';
-import { Observable } from 'rxjs'; 
+import { CommonMethodsModule } from '../modules/common-methods/common-methods.module'; 
+import { Subscription } from 'rxjs/internal/Subscription';
+ 
 
 @Component({
   selector: 'app-home',
@@ -13,6 +14,7 @@ import { Observable } from 'rxjs';
 })
 export class HomePage {
 
+  private parkinSubscription : Subscription;
   private user: User;
   private usagesParking: ParkingUsage;
   private parkingAvailable: Array<Parking>;
@@ -25,10 +27,10 @@ export class HomePage {
     private localDb: DbServiceService) {
 
     this.usagesParking =
-      {
+    {
         Free: 0,
         Used: 0
-      }
+    }
 
     this.parkingAvailable = [];
     this.spliceBranch = [];
@@ -36,34 +38,29 @@ export class HomePage {
 
   ngOnInit() {
     this.commonMethods.ConsoleLog("Entro ngOnInit:", {});
-  
-    this.localDb.GetUser().then(usr => {
-      this.user = usr;
-      this.GetParkingUsage();
-    });
-
+   
   }
 
   GetParkingUsage() {
     this.commonMethods.ConsoleLog("Entro GetParkingUsage:", {});
 
-    this.dbFireServiceParking.GetParkings( )
-    .subscribe(snapshot => { 
-      
-      this.commonMethods.ConsoleLog("Entro GetParkings" , snapshot);
-      let list: Parking[] = this.commonMethods.ConvertObjectToArray(snapshot);
+   this.parkinSubscription =  this.dbFireServiceParking.GetParkings( )
+                              .subscribe(snapshot => { 
+                                
+                                this.commonMethods.ConsoleLog("Entro GetParkings" , snapshot);
+                                let list: Parking[] = this.commonMethods.ConvertObjectToArray(snapshot);
 
-      this.parkingAvailable = list.filter(item => item.BranchId == this.user.BranchId);
-        
-      this.commonMethods.ConsoleLog("Entro dbFireServiceParking.GetParkings", {}); 
-      this.dbFireServiceUsage.GetParkingUsage(this.user).then(result => { 
-        this.commonMethods.ConsoleLog("Entro dbFireServiceUsage.GetParkingUsage:", {});
-        this.usagesParking = result; 
-        this.usagesParking.Free = list.length - result.Used; 
-        this.parkingAvailable = list;
-        this.spliceBranch = this.spliceArray();
-      });
-    });   
+                                this.parkingAvailable = list.filter(item => item.BranchId == this.user.BranchId);
+                                
+                                this.commonMethods.ConsoleLog("Entro dbFireServiceParking.GetParkings", {}); 
+                                this.dbFireServiceUsage.GetParkingUsage(this.user).then(result => { 
+                                  this.commonMethods.ConsoleLog("Entro dbFireServiceUsage.GetParkingUsage:", {});
+                                  this.usagesParking = result; 
+                                  this.usagesParking.Free = this.parkingAvailable.length - result.Used; 
+                                   
+                                  this.spliceBranch = this.spliceArray();
+                                });
+                              });   
 
   }
 
@@ -89,11 +86,28 @@ export class HomePage {
     /*this.router.navigate(["parking-list"]);*/
   }
 
-  TakeSpot() {
-    this.router.navigate(["register-parking"]);
+  TakeSpot() { 
+    this.router.navigate(["register-parking" ]);
+  } 
+  
+  BreakFreeSpot(){
+    this.router.navigate(["set-break-free-spot" ]);
+  }
+ 
+  ionViewDidLeave(){
+    this.commonMethods.ConsoleLog("ionViewDidLeave home ",{}); 
+    this.parkinSubscription.unsubscribe();
   }
 
-  getFleets(): Observable<Array<Parking[]>> {
-    return Observable.call(this.GetParkingList)
+  ionViewWillEnter (){
+    this.commonMethods.ConsoleLog("ionViewWillEnter  home ",{}); 
+
+    this.localDb.GetUser().then(usr => {
+      this.user = usr;
+      this.GetParkingUsage();
+    });
+  }
+  ngOnDestroy(){
+    this.commonMethods.ConsoleLog("ngOnDestroy home ",{});  
   }
 }

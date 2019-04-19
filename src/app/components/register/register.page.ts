@@ -5,6 +5,7 @@ import { User, Branch } from '../../models/export-models';
 
 import { DbServiceService, AuthServiceService, DbFireBaseServiceService } from "../../services/export-services";
 import { ToastModule } from "../../modules/toast/toast.module"; 
+import { CommonMethodsModule } from 'src/app/modules/common-methods/common-methods.module';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +17,7 @@ export class RegisterPage implements OnInit {
   public formgroup: FormGroup;
   public Branches:Branch[];
 
-  constructor(private router: Router,
+  constructor(private router: Router, private commonMethods: CommonMethodsModule,
     private dbLocal: DbServiceService,
     private authService: AuthServiceService,
     private toast:ToastModule,
@@ -114,5 +115,10 @@ export class RegisterPage implements OnInit {
     }).catch(error =>{
         
     });
+  }
+  
+  ionViewDidLeave(){
+    this.commonMethods.ConsoleLog("ionViewDidLeave ",{});
+    this.cleanForm();
   }
 }

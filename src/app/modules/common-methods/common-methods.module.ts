@@ -31,7 +31,7 @@ export class CommonMethodsModule {
 
   public ConsoleLog(message:string, value:any)
   {
-    //debugger;
+     
     console.log(message +": "+ JSON.stringify(value));
   }
 

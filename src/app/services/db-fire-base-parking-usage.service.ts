@@ -35,7 +35,7 @@ export class DbFireBaseParkingUsageService {
         .subscribe(snapshot => {
            
           if (!isNullOrUndefined(snapshot)) {
-            this.commonMethods.ConsoleLog("Entro GetParkingUsage:", snapshot);
+            this.commonMethods.ConsoleLog("Entro GetParkingUsage ", snapshot);
 
             let list: any[] = this.commonMethods.ConvertObjectToArray(snapshot);
 
@@ -48,25 +48,17 @@ export class DbFireBaseParkingUsageService {
               else {
                 parkingUsage.Free++;
               }
-            });
-
-            this.subscriptionDate.unsubscribe();
-            assert(parkingUsage);
-          }
-          else{
-            let usage:UsedParkingLot = { 
-            }
-            this.SetDate(usage).then(()=>{
-              assert(parkingUsage)
-            });
-          }
+            }); 
+          } 
+          this.subscriptionDate.unsubscribe();
+          assert(parkingUsage);
         });
     });
   }
 
-  SetDate(parking:UsedParkingLot) {
+  SetDateUsedParking(parking:UsedParkingLot) {
     return new Promise((assert, reject) => {
-      let strRef = "/Dates/" + this.dateTime;
+      let strRef = "/Dates/" + this.dateTime+"/"+parking.UserId;
       this.afDB.object(strRef).set(parking).then(() => {
         this.commonMethods.ConsoleLog("SetDate afDB.object" , parking);
         assert({});
