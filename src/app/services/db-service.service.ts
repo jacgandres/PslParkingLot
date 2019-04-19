@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NativeStorage } from '@ionic-native/native-storage/ngx'; 
 import { User } from "../models/User";
 import { Platform } from '@ionic/angular';
+import { CommonMethodsModule } from '../modules/common-methods/common-methods.module';
  
 
 @Injectable({
@@ -9,26 +10,28 @@ import { Platform } from '@ionic/angular';
 })
 export class DbServiceService {
  
-  constructor(private nativeStorage: NativeStorage, private platform: Platform ) { }
+  constructor(private nativeStorage: NativeStorage, private platform: Platform, private commonMethods:CommonMethodsModule ) { }
 
   GetUser():Promise<User>{
     let user:User;
-    
+    this.commonMethods.ConsoleLog("Entro GetUser:" , {});
 
     if (this.platform.is('cordova')) {
       return new Promise((resolve,reject) =>{
         this.nativeStorage.getItem('User').then(result =>{
-           user = result;
+           this.commonMethods.ConsoleLog("Entro getItem:" , result);
+           user = JSON.parse(result);
            resolve(user);
         }).catch(error =>{
-           reject(error);
+           this.commonMethods.ConsoleLog("Error GetUser" , error);
+           resolve(null);
         });
       })
     }
     else{
-      return new Promise((resolve,reject) =>{
+      return new Promise((resolve,reject) =>{ 
         try {
-          user = JSON.parse( localStorage.getItem('Usuario'));
+          user = JSON.parse( localStorage.getItem('User'));
           resolve(user); 
         } catch (error) {
           reject(error);
@@ -38,15 +41,17 @@ export class DbServiceService {
   }
 
   SetUser(user:User){
+    this.commonMethods.ConsoleLog("Entro SetUser:" , {});
     if (this.platform.is('cordova')) {
       this.nativeStorage.setItem('User', JSON.stringify(user));
     }
     else{
-      localStorage.setItem('Usuario',JSON.stringify(user));
+      localStorage.setItem('User',JSON.stringify(user));
     }
   }
 
   CleanUser(){
+    this.commonMethods.ConsoleLog("Entro CleanUser:" , {});
     if (this.platform.is('cordova')) {
       this.nativeStorage.remove('User');
     }

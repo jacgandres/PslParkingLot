@@ -1,6 +1,14 @@
 export interface User {
     UserId?: string;
-    email?: string;
-    pwd?: string;  
-    Phone?: number; 
+    Photo?:string;
+    FirstName?:string;
+    LastName?:string;
+    Email?: string;
+    Pwd?: string;  
+    Phone?: string; 
+    Skype?:string;
+    Plate?:string;
+    Brand?:string;
+    Color?:string;
+    BranchId?:number;
 }

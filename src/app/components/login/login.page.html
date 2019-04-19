@@ -1,22 +1,57 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
+  <ion-toolbar color="primary">
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="6">
+            <ion-title>
+              <h2>Iniciar Sesion</h2>
+            </ion-title>
+        </ion-col>
+        <ion-col size="6" class="register">
+            <ion-chip (click)="Register()" color="light"> 
+                <ion-label>Registrarse</ion-label>
+                <ion-icon name="person-add"></ion-icon>
+            </ion-chip>
+        </ion-col>
+      </ion-row>
+    </ion-grid> 
   </ion-toolbar>
 </ion-header>
-
 <ion-content> 
-  <ion-img class="icon" src="assets/img/profile-male.png" ></ion-img>
-  <ion-item>
-    <ion-label position="floating">Email</ion-label>
-    <ion-input type="text" name="email" [(ngModel)]="Email"> </ion-input>
-  </ion-item>
- 
-  <ion-item>
-    <ion-label position="floating">Clave</ion-label>
-    <ion-input type="password" name="password" [(ngModel)]="Pwd"> </ion-input>
-  </ion-item>
-
-  <ion-button expand="block" (click)="OnSubmitLogin()">
-    Ingresar
-  </ion-button>
+  <form [formGroup]="formgroup" >
+      <fieldset formGroupName="loginDetails">
+          <ion-img class="icon" src="assets/img/profile-male.png" ></ion-img>
+          <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input type="text" formControlName="Email" > </ion-input>
+          </ion-item>
+          <ion-item-divider *ngIf="!formgroup.get('loginDetails').get('Email').valid &&
+                                    formgroup.get('loginDetails').get('Email').touched">
+              <ion-label color="danger">Por favor ingrese un email en el formato correcto</ion-label>
+          </ion-item-divider> 
+          <ion-item>
+            <ion-label position="floating">Clave</ion-label>
+            <ion-input type="password" formControlName="Password" > </ion-input>
+          </ion-item>
+          <ion-item-divider *ngIf="!formgroup.get('loginDetails').get('Password').valid &&
+                                    formgroup.get('loginDetails').get('Password').touched">
+              <ion-label color="danger">La clave debe tener al menos 6 caracteres</ion-label>
+          </ion-item-divider> 
+      </fieldset>
+      <ion-button expand="block" (click)="OnSubmitLogin()" [disabled]="formgroup.invalid">
+        Ingresar
+      </ion-button> 
+  </form>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="4"> 
+      </ion-col>
+      <ion-col size="8" class="renovate">
+          <ion-chip (click)="RenovatePassword()" > 
+             <ion-label>Recuperar Contraseña</ion-label>
+              <ion-icon name="paper-plane"></ion-icon>
+          </ion-chip>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
