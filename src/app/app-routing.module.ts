@@ -37,7 +37,19 @@ const routes: Routes = [
     path: 'parking-list',
     loadChildren: './components/parking-list/parking-list.module#ParkingListPageModule',
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'register-parking',
+    loadChildren: './components/register-parking/register-parking.module#RegisterParkingPageModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'set-break-free-spot',
+    loadChildren: './components/set-break-free-spot/set-break-free-spot.module#SetBreakFreeSpotPageModule',
+    canActivate: [AuthGuard]
   }
+
+
 
 
 

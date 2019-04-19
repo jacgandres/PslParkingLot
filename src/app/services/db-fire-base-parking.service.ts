@@ -1,33 +1,48 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/database';
-import { Subscription } from 'rxjs';
+import { AngularFireDatabase, snapshotChanges } from '@angular/fire/database';
 import { CommonMethodsModule } from '../modules/common-methods/common-methods.module';
-import { Parking, User } from '../models/export-models'; 
+import { Parking } from '../models/export-models';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DbFireBaseParkingService {
 
-  private subscriptionUser: Subscription;
+  private parkingGetSubscription: Subscription;
+  private parkingList: Parking[] = [];
 
   constructor(private afDB: AngularFireDatabase, private commonMethods: CommonMethodsModule) { }
 
-  public GetParkings(Usr:User):Promise<Parking[]>{
-    
-    return new Promise((assert) => {
-      let strRef = "/Parking/";
-      this.subscriptionUser = this.afDB.object(strRef)
-        .valueChanges()
-        .subscribe(snapshot => { 
-            this.commonMethods.ConsoleLog("Entro GetParkings:" , snapshot);
-            let list: Parking[] = this.commonMethods.ConvertObjectToArray(snapshot);
+  public GetParkings() {
 
-            list = list.filter(item => item.BranchId == Usr.BranchId);
-            
-            this.subscriptionUser.unsubscribe();
-            assert(list);
-        });
-    })
+    let strRef = "/Parking/";
+    return this.afDB.object(strRef).valueChanges();
   }
+
+  UpdateParking(parking: Parking) { 
+    return new Promise((resolve) => {
+      let strRef = "/Parking/" + parking.ParkingLotId;
+      this.afDB.object(strRef)
+        .update(parking)
+        .then(result => {
+          resolve(true);
+        })
+    });
+  }
+
+  GetParkingById(parkingId: string) { 
+    return new Promise<Parking>((resolve) => {
+      let strRef = "/Parking/" + parkingId;
+      const ref = this.afDB.database.ref(strRef);
+
+      ref.on("value", snapshot => {
+
+        let value = snapshot.val();
+        resolve(value);
+      })
+
+    });
+  }
+
 }

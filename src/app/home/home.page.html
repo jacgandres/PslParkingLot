@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar  color="primary">
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -19,9 +19,9 @@
         </ion-thumbnail>
         <ion-label>Registrar Parqueo</ion-label>
       </ion-item>
-      <ion-item-options side="end">
+      <ion-item-options side="end" (click)="TakeSpot()">
         <ion-item-option color="primary">
-          <ion-label (click)="TakeSpot()">Parquear!</ion-label>
+          <ion-label>Parquear!</ion-label>
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
@@ -35,9 +35,9 @@
         </ion-thumbnail>
         <ion-label>Liberar Parqueadero</ion-label>
       </ion-item>
-      <ion-item-options side="end">
+      <ion-item-options side="end" (click)="BreakFreeSpot()">
         <ion-item-option color="primary">
-          <ion-label (click)="BreakFreeSpot()">Liberar!</ion-label>
+          <ion-label>Liberar!</ion-label>
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
@@ -47,14 +47,14 @@
     <ion-item-sliding>
       <ion-item-options side="start">
         <ion-item-option>
-          <ion-label (click)="GetAvailability('1')">Disponibles</ion-label>
+          <ion-label>Disponibles</ion-label>
           <ion-badge color="success" slot="end">
             {{usagesParking.Free}}
           </ion-badge>
         </ion-item-option>
       </ion-item-options>
 
-      <ion-item>
+      <ion-item tooltip="Gire a la derecha o izquierda para ver la disponibilidad" positionV="top">
         <ion-thumbnail slot="start">
           <img src="../../assets/img/Parking-List.PNG">
         </ion-thumbnail>
@@ -63,12 +63,30 @@
 
       <ion-item-options side="end">
         <ion-item-option color="danger">
-          <ion-label (click)="GetAvailability('2')">Ocupados</ion-label>
+          <ion-label>Ocupados</ion-label>
           <ion-badge color="light" slot="end">
             {{usagesParking.Used}}
           </ion-badge>
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
+  </fieldset>
+  <br>
+  <fieldset style="background-color: blue">
+    <ion-grid fixed>
+      <div *ngFor="let itemArray of spliceBranch">
+        <ion-row style="margin-left: 79px; margin-top: 20px">
+          <div *ngFor="let itemSubArray of itemArray">
+            <ion-col size="2" [ngClass]="itemSubArray.IsUsed? 'rowAvailabilityUsed' : 'rowAvailabilityFree'">
+              {{itemSubArray.ParkingNumber}}
+            </ion-col>
+            <ion-col size="1"> </ion-col>
+          </div>
+        </ion-row>
+        <ion-row style="margin-left: 20px">
+          <ion-col size="12"> </ion-col>
+        </ion-row>
+      </div>
+    </ion-grid>
   </fieldset>
 </ion-content>

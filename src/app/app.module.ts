@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from "@angular/common";
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
+ 
 
 import { IonicModule, IonicRouteStrategy, Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -16,8 +18,7 @@ import { AngularFireDatabaseModule } from "@angular/fire/database";
 
 import { DatePipe } from '@angular/common'
 
-import { NativeStorage } from '@ionic-native/native-storage/ngx'; 
-  
+import { NativeStorage } from '@ionic-native/native-storage/ngx';  
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,10 +27,11 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
     BrowserModule,
     IonicModule.forRoot(),  
     AppRoutingModule,
+    CommonModule, 
     AngularFireModule.initializeApp(FireBaseConfig),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    CommonMethodsModule
+    CommonMethodsModule 
   ],
   providers: [
     StatusBar,
