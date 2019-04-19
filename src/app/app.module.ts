@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from "@angular/common";
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
+ 
 
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicModule, IonicRouteStrategy, Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-
+import { CommonMethodsModule } from "../app/modules/common-methods/common-methods.module";
 import { FireBaseConfig } from "../environments/environment";
 import { AngularFireModule } from "@angular/fire";
 import { AngularFireAuthModule } from "@angular/fire/auth";
@@ -16,8 +18,7 @@ import { AngularFireDatabaseModule } from "@angular/fire/database";
 
 import { DatePipe } from '@angular/common'
 
-import { NativeStorage } from '@ionic-native/native-storage/ngx'; 
-  
+import { NativeStorage } from '@ionic-native/native-storage/ngx';  
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,9 +27,11 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
     BrowserModule,
     IonicModule.forRoot(),  
     AppRoutingModule,
+    CommonModule, 
     AngularFireModule.initializeApp(FireBaseConfig),
     AngularFireAuthModule,
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    CommonMethodsModule 
   ],
   providers: [
     StatusBar,
@@ -39,4 +42,9 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+
+  constructor( ){ 
+  }
+
+}
