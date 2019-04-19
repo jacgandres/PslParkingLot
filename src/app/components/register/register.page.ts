@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { User } from '../../models/User';
+import { User, Branch } from '../../models/export-models';
 
 import { DbServiceService, AuthServiceService, DbFireBaseServiceService } from "../../services/export-services";
-import { ToastModule } from "../../modules/toast/toast.module";
+import { ToastModule } from "../../modules/toast/toast.module"; 
+import { CommonMethodsModule } from 'src/app/modules/common-methods/common-methods.module';
 
 @Component({
   selector: 'app-register',
@@ -14,8 +15,9 @@ import { ToastModule } from "../../modules/toast/toast.module";
 export class RegisterPage implements OnInit {
 
   public formgroup: FormGroup;
+  public Branches:Branch[];
 
-  constructor(private router: Router,
+  constructor(private router: Router, private commonMethods: CommonMethodsModule,
     private dbLocal: DbServiceService,
     private authService: AuthServiceService,
     private toast:ToastModule,
@@ -25,7 +27,8 @@ export class RegisterPage implements OnInit {
     this.formgroup = new FormGroup({
       UserDetails: new FormGroup({
         FirstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
-        LastName: new FormControl('', [Validators.required, Validators.minLength(4)])
+        LastName: new FormControl('', [Validators.required, Validators.minLength(4)]),
+        BranchId: new FormControl()
       }),
       ContactInfo: new FormGroup({
         Email: new FormControl('', Validators.compose([
@@ -42,10 +45,17 @@ export class RegisterPage implements OnInit {
       }),
     });
 
-    this.cleanForm();
   }
 
   ngOnInit() {
+    this.cleanForm();
+    this.GetBranches();
+  }
+
+  GetBranches(){
+     this.dbFire.GetBranches().then(result =>{ 
+          this.Branches = result;
+     });
   }
 
   Return() {
@@ -89,7 +99,8 @@ export class RegisterPage implements OnInit {
       Skype : this.formgroup.value.ContactInfo.Skype, 
       Plate : this.formgroup.value.CarDetails.Plate,
       Color : this.formgroup.value.CarDetails.Color,
-      Brand : this.formgroup.value.CarDetails.Brand
+      Brand : this.formgroup.value.CarDetails.Brand,
+      BranchId : this.formgroup.value.UserDetails.BranchId
     } 
 
     this.authService.SignUp(registerUser).then(usr  => { 
@@ -104,5 +115,10 @@ export class RegisterPage implements OnInit {
     }).catch(error =>{
         
     });
+  }
+  
+  ionViewDidLeave(){
+    this.commonMethods.ConsoleLog("ionViewDidLeave ",{});
+    this.cleanForm();
   }
 }

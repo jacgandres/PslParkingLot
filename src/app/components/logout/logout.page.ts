@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthServiceService } from "../../services/auth-service.service";
-import { Router } from "@angular/router";
-import { DbServiceService } from "../../services/db-service.service";
+import { AuthServiceService, DbServiceService } from "../../services/export-services";
+import { Router, NavigationExtras } from "@angular/router"; 
 import { ToastModule } from "../../modules/toast/toast.module";
+import { CommonMethodsModule } from 'src/app/modules/common-methods/common-methods.module';
+  
 
 @Component({
   selector: 'app-logout',
@@ -11,19 +12,25 @@ import { ToastModule } from "../../modules/toast/toast.module";
 })
 export class LogoutPage implements OnInit {
 
-  constructor(private router:Router, private authService: AuthServiceService, 
-              private dbLocalService:DbServiceService, private toast:ToastModule) { }
+  constructor(private router:Router, private authService: AuthServiceService,
+              private dbLocalService:DbServiceService, private toast:ToastModule, private commonMethods: CommonMethodsModule) { }
 
   ngOnInit() {
   }
 
   LogOut()
-  { 
+  {  
+    this.commonMethods.ConsoleLog("LogOut" , {});
     this.authService.LogOut().then( response =>{
       this.dbLocalService.GetUser().then(usr =>{
-          this.toast.presentToast(usr.FirstName + " " + usr.LastName + " has salido correctamente.");
-          this.dbLocalService.CleanUser();
-          this.router.navigate(['login']);
+          
+          this.toast.presentToast(usr.FirstName + " " + usr.LastName + ", has salido correctamente.");
+          let navigationExtras: NavigationExtras = {
+            queryParams: {
+              special: JSON.stringify({CleanUser:true})
+            }
+          };
+          this.router.navigate(['login'], navigationExtras);
       });
     });
   }

@@ -10,4 +10,5 @@ export interface User {
     Plate?:string;
     Brand?:string;
     Color?:string;
+    BranchId?:number;
 }
