@@ -3,7 +3,8 @@ import { Router, NavigationExtras } from '@angular/router';
 import { User } from '../models/User';
 import { DbServiceService, DbFireBaseParkingUsageService, DbFireBaseParkingService } from "../services/export-services";
 import { ParkingUsage, Parking } from '../models/export-models';
-import { CommonMethodsModule } from '../modules/common-methods/common-methods.module'; 
+import { CommonMethodsModule } from '../modules/common-methods/common-methods.module';
+import { NewDayModule } from '../modules/new-day/new-day.module';   
 import { Subscription } from 'rxjs/internal/Subscription';
  
 
@@ -13,8 +14,8 @@ import { Subscription } from 'rxjs/internal/Subscription';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-
-  private parkinSubscription : Subscription;
+ 
+  private subscriptioParking:Subscription;
   private user: User;
   private usagesParking: ParkingUsage;
   private parkingAvailable: Array<Parking>;
@@ -24,6 +25,7 @@ export class HomePage {
     private dbFireServiceUsage: DbFireBaseParkingUsageService,
     private dbFireServiceParking: DbFireBaseParkingService,
     private commonMethods: CommonMethodsModule,
+    private newDay:NewDayModule,
     private localDb: DbServiceService) {
 
     this.usagesParking =
@@ -38,29 +40,27 @@ export class HomePage {
 
   ngOnInit() {
     this.commonMethods.ConsoleLog("Entro ngOnInit:", {});
-   
+    this.newDay.SetDay().then((result) =>{ if(result){window.location.reload();} });
   }
 
   GetParkingUsage() {
     this.commonMethods.ConsoleLog("Entro GetParkingUsage:", {});
 
-   this.parkinSubscription =  this.dbFireServiceParking.GetParkings( )
-                              .subscribe(snapshot => { 
-                                
-                                this.commonMethods.ConsoleLog("Entro GetParkings" , snapshot);
-                                let list: Parking[] = this.commonMethods.ConvertObjectToArray(snapshot);
-
-                                this.parkingAvailable = list.filter(item => item.BranchId == this.user.BranchId);
-                                
-                                this.commonMethods.ConsoleLog("Entro dbFireServiceParking.GetParkings", {}); 
-                                this.dbFireServiceUsage.GetParkingUsage(this.user).then(result => { 
-                                  this.commonMethods.ConsoleLog("Entro dbFireServiceUsage.GetParkingUsage:", {});
-                                  this.usagesParking = result; 
-                                  this.usagesParking.Free = this.parkingAvailable.length - result.Used; 
-                                   
-                                  this.spliceBranch = this.spliceArray();
-                                });
-                              });   
+    this.subscriptioParking =  this.dbFireServiceParking.GetParkings(this.user.BranchId)
+                                                  .subscribe(snapshot => { 
+                                                    
+                                                    this.commonMethods.ConsoleLog("Entro GetParkings" , snapshot);
+                                                    this.parkingAvailable = this.commonMethods.ConvertObjectToArray(snapshot);
+                    
+                                                    this.commonMethods.ConsoleLog("Entro dbFireServiceParking.GetParkings", {}); 
+                                                    this.dbFireServiceUsage.GetParkingUsage(this.user).then(result => { 
+                                                      this.commonMethods.ConsoleLog("Entro dbFireServiceUsage.GetParkingUsage:", {});
+                                                      this.usagesParking = result; 
+                                                      this.usagesParking.Free = this.parkingAvailable.length - result.Used; 
+                                                      
+                                                      this.spliceBranch = this.spliceArray();
+                                                    });
+                                                  });   
 
   }
 
@@ -95,8 +95,8 @@ export class HomePage {
   }
  
   ionViewDidLeave(){
-    this.commonMethods.ConsoleLog("ionViewDidLeave home ",{}); 
-    this.parkinSubscription.unsubscribe();
+    this.commonMethods.ConsoleLog("ionViewDidLeave home ",{});  
+    this.subscriptioParking.unsubscribe();
   }
 
   ionViewWillEnter (){

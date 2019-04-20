@@ -4,7 +4,8 @@ import { CommonMethodsModule } from 'src/app/modules/common-methods/common-metho
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User, Parking, UsedParkingLot } from 'src/app/models/export-models';
 import { DbServiceService, DbFireBaseParkingService, DbFireBaseParkingUsageService } from 'src/app/services/export-services';
-import { Subscription } from 'rxjs';
+import { isNullOrUndefined } from 'util';
+ 
 
 @Component({
   selector: 'app-register-parking',
@@ -12,8 +13,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./register-parking.page.scss'],
 })
 export class RegisterParkingPage implements OnInit {
-
-  private parkinSubscription: Subscription;
+ 
   private parkinForm: FormGroup;
   private user: User
   private parkingLot: Parking[];
@@ -35,18 +35,35 @@ export class RegisterParkingPage implements OnInit {
   }
 
   ngOnInit() {
-    this.dbLocal.GetUser().then(usr => { 
-    
+  }
+
+  ionViewWillEnter (){
+    this.dbLocal.GetUser().then(usr => {  
       this.user = usr;
-      this.parkinSubscription = this.dbFireServiceParking.GetParkings()
-        .subscribe(snapshot => {
-          
-          let list: Parking[] = this.commonMethods.ConvertObjectToArray(snapshot);
-          this.parkingLot = list.filter(item => item.BranchId == this.user.BranchId &&
-                                                item.IsUsed == false
-                                       );
+      this.dbFireServiceParking.GetParkingByFilters(usr.BranchId)
+        .then(snapshot => {  
+          let list: Parking[] = this.commonMethods.ConvertObjectToArray(snapshot); 
+          this.ValidateIfUserAlreadyHaveUsedParkingLot().then(result =>{ 
+            
+            if(result)
+            {
+              this.parkingLot = list.filter(item =>  item.IsUsed == false );
+            }
+            else
+            {
+              this.commonMethods.presentAlert("Ya tiene asignado un parqueadero","");
+              this.Return();
+            }
+          })
         });
     });
+  }
+  ValidateIfUserAlreadyHaveUsedParkingLot():Promise<boolean> {
+    return new Promise<boolean>((resolve) =>{
+      this.dbFireServiceUsedParking.GetParkingUsageByUserId(this.user.UserId).then(result =>{
+          resolve(isNullOrUndefined(result));    
+      })
+    })
   }
 
   Return() {
@@ -54,8 +71,7 @@ export class RegisterParkingPage implements OnInit {
   }
 
   ionViewDidLeave() {
-    this.commonMethods.ConsoleLog("ionViewDidLeave register parking ", {});
-    this.parkinSubscription.unsubscribe();
+    this.commonMethods.ConsoleLog("ionViewDidLeave register parking ", {}); 
     this.cleanForm();
   }
 
