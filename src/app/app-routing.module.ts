@@ -47,8 +47,7 @@ const routes: Routes = [
     path: 'set-break-free-spot',
     loadChildren: './components/set-break-free-spot/set-break-free-spot.module#SetBreakFreeSpotPageModule',
     canActivate: [AuthGuard]
-  }
-
+  } 
 
 
 

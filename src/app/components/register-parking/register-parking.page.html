@@ -34,7 +34,7 @@
           <ion-input required formControlName="plate" type="text"></ion-input>
 
           <ion-item-divider *ngIf="!parkinForm.get('parkinGroup').get('LastName')?.valid &&
-                              parkinForm.get('parkinGroup').get('LastName')?.touched">
+                                    parkinForm.get('parkinGroup').get('LastName')?.touched">
             <ion-label color="danger">Por favor ingrese su placa</ion-label>
           </ion-item-divider>
         </ion-item>
@@ -46,7 +46,7 @@
             </ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-button block color="primary" type="submit" [disabled]="parkinForm.invalid">
+        <ion-button block color="primary" type="submit" [disabled]="parkinForm.invalid" expand="block">
           Parquear
         </ion-button>
       </fieldset>

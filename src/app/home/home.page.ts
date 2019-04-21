@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
+import { IonItemSliding  } from "@ionic/angular";
+import { Router } from '@angular/router';
 import { User } from '../models/User';
 import { DbServiceService, DbFireBaseParkingUsageService, DbFireBaseParkingService } from "../services/export-services";
 import { ParkingUsage, Parking } from '../models/export-models';
-import { CommonMethodsModule } from '../modules/common-methods/common-methods.module'; 
-import { Subscription } from 'rxjs/internal/Subscription';
- 
+import { CommonMethodsModule, NewDayModule } from '../modules/export-modules'; 
+import { Subscription } from 'rxjs/internal/Subscription'; 
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  styleUrls: ['home.page.scss'] 
 })
 export class HomePage {
-
-  private parkinSubscription : Subscription;
+ 
+  private subscriptioParking:Subscription;
   private user: User;
   private usagesParking: ParkingUsage;
   private parkingAvailable: Array<Parking>;
@@ -23,7 +23,7 @@ export class HomePage {
   constructor(private router: Router,
     private dbFireServiceUsage: DbFireBaseParkingUsageService,
     private dbFireServiceParking: DbFireBaseParkingService,
-    private commonMethods: CommonMethodsModule,
+    private commonMethods: CommonMethodsModule, private newDay:NewDayModule, 
     private localDb: DbServiceService) {
 
     this.usagesParking =
@@ -36,31 +36,30 @@ export class HomePage {
     this.spliceBranch = [];
   }
 
-  ngOnInit() {
+  ngOnInit() { 
+    debugger;  
     this.commonMethods.ConsoleLog("Entro ngOnInit:", {});
-   
+    this.newDay.SetDay().then((result) =>{ if(result){window.location.reload();} });
   }
 
   GetParkingUsage() {
     this.commonMethods.ConsoleLog("Entro GetParkingUsage:", {});
 
-   this.parkinSubscription =  this.dbFireServiceParking.GetParkings( )
-                              .subscribe(snapshot => { 
-                                
-                                this.commonMethods.ConsoleLog("Entro GetParkings" , snapshot);
-                                let list: Parking[] = this.commonMethods.ConvertObjectToArray(snapshot);
-
-                                this.parkingAvailable = list.filter(item => item.BranchId == this.user.BranchId);
-                                
-                                this.commonMethods.ConsoleLog("Entro dbFireServiceParking.GetParkings", {}); 
-                                this.dbFireServiceUsage.GetParkingUsage(this.user).then(result => { 
-                                  this.commonMethods.ConsoleLog("Entro dbFireServiceUsage.GetParkingUsage:", {});
-                                  this.usagesParking = result; 
-                                  this.usagesParking.Free = this.parkingAvailable.length - result.Used; 
-                                   
-                                  this.spliceBranch = this.spliceArray();
-                                });
-                              });   
+    this.subscriptioParking =  this.dbFireServiceParking.GetParkings(this.user.BranchId)
+                                                  .subscribe(snapshot => { 
+                                                    
+                                                    this.commonMethods.ConsoleLog("Entro GetParkings" , snapshot);
+                                                    this.parkingAvailable = this.commonMethods.ConvertObjectToArray(snapshot);
+                    
+                                                    this.commonMethods.ConsoleLog("Entro dbFireServiceParking.GetParkings", {}); 
+                                                    this.dbFireServiceUsage.GetParkingUsage(this.user).then(result => { 
+                                                      this.commonMethods.ConsoleLog("Entro dbFireServiceUsage.GetParkingUsage:", {});
+                                                      this.usagesParking = result; 
+                                                      this.usagesParking.Free = this.parkingAvailable.length - result.Used; 
+                                                      
+                                                      this.spliceBranch = this.spliceArray();
+                                                    });
+                                                  });   
 
   }
 
@@ -86,17 +85,19 @@ export class HomePage {
     /*this.router.navigate(["parking-list"]);*/
   }
 
-  TakeSpot() { 
+  TakeSpot(slidingItem: IonItemSliding){
+    slidingItem.close();
     this.router.navigate(["register-parking" ]);
   } 
   
-  BreakFreeSpot(){
+  BreakFreeSpot(slidingItem: IonItemSliding){
+    slidingItem.close();
     this.router.navigate(["set-break-free-spot" ]);
   }
  
   ionViewDidLeave(){
-    this.commonMethods.ConsoleLog("ionViewDidLeave home ",{}); 
-    this.parkinSubscription.unsubscribe();
+    this.commonMethods.ConsoleLog("ionViewDidLeave home ",{});  
+    this.subscriptioParking.unsubscribe();
   }
 
   ionViewWillEnter (){
