@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
+import { IonItemSliding  } from "@ionic/angular";
+import { Router } from '@angular/router';
 import { User } from '../models/User';
 import { DbServiceService, DbFireBaseParkingUsageService, DbFireBaseParkingService } from "../services/export-services";
 import { ParkingUsage, Parking } from '../models/export-models';
 import { CommonMethodsModule } from '../modules/common-methods/common-methods.module';
 import { NewDayModule } from '../modules/new-day/new-day.module';   
 import { Subscription } from 'rxjs/internal/Subscription';
- 
+//import { ItemSliding } from 'ionic-angular';
 
 @Component({
   selector: 'app-home',
@@ -86,11 +87,13 @@ export class HomePage {
     /*this.router.navigate(["parking-list"]);*/
   }
 
-  TakeSpot() { 
+  TakeSpot(slidingItem: IonItemSliding){
+    slidingItem.close();
     this.router.navigate(["register-parking" ]);
   } 
   
-  BreakFreeSpot(){
+  BreakFreeSpot(slidingItem: IonItemSliding){
+    slidingItem.close();
     this.router.navigate(["set-break-free-spot" ]);
   }
  

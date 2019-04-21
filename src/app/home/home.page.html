@@ -12,14 +12,14 @@
 <ion-content>
   <br>
   <fieldset>
-    <ion-item-sliding>
+    <ion-item-sliding #parkSlidingItem>
       <ion-item>
         <ion-thumbnail slot="start">
           <img src="../../assets/img/Parking-In.PNG">
         </ion-thumbnail>
         <ion-label>Registrar Parqueo</ion-label>
       </ion-item>
-      <ion-item-options side="end" (click)="TakeSpot()">
+      <ion-item-options side="end" (click)="TakeSpot(parkSlidingItem)">
         <ion-item-option color="primary">
           <ion-label>Parquear!</ion-label>
         </ion-item-option>
@@ -28,14 +28,14 @@
   </fieldset>
   <br>
   <fieldset>
-    <ion-item-sliding>
+    <ion-item-sliding #breakFreeSpotSlidingItem>
       <ion-item>
         <ion-thumbnail slot="start">
           <img src="../../assets/img/Parking-Out.PNG">
         </ion-thumbnail>
         <ion-label>Liberar Parqueadero</ion-label>
       </ion-item>
-      <ion-item-options side="end" (click)="BreakFreeSpot()">
+      <ion-item-options side="end" (click)="BreakFreeSpot(breakFreeSpotSlidingItem)">
         <ion-item-option color="primary">
           <ion-label>Liberar!</ion-label>
         </ion-item-option>
