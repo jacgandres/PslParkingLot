@@ -4,8 +4,7 @@ import { Router } from '@angular/router';
 import { User } from '../models/User';
 import { DbServiceService, DbFireBaseParkingUsageService, DbFireBaseParkingService } from "../services/export-services";
 import { ParkingUsage, Parking } from '../models/export-models';
-import { CommonMethodsModule } from '../modules/common-methods/common-methods.module';
-import { NewDayModule } from '../modules/new-day/new-day.module';   
+import { CommonMethodsModule, NewDayModule, NetworkModule } from '../modules/export-modules'; 
 import { Subscription } from 'rxjs/internal/Subscription';
 //import { ItemSliding } from 'ionic-angular';
 
@@ -25,8 +24,7 @@ export class HomePage {
   constructor(private router: Router,
     private dbFireServiceUsage: DbFireBaseParkingUsageService,
     private dbFireServiceParking: DbFireBaseParkingService,
-    private commonMethods: CommonMethodsModule,
-    private newDay:NewDayModule,
+    private commonMethods: CommonMethodsModule, private newDay:NewDayModule, private network:NetworkModule,
     private localDb: DbServiceService) {
 
     this.usagesParking =
@@ -40,6 +38,11 @@ export class HomePage {
   }
 
   ngOnInit() {
+ 
+    debugger;
+    this.network.GetNetworkConectState();
+    this.network.GetNetworkDisConectState();
+
     this.commonMethods.ConsoleLog("Entro ngOnInit:", {});
     this.newDay.SetDay().then((result) =>{ if(result){window.location.reload();} });
   }

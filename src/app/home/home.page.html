@@ -75,7 +75,7 @@
   <fieldset style="background-color: blue">
     <ion-grid fixed>
       <div *ngFor="let itemArray of spliceBranch">
-        <ion-row style="margin-left: 79px; margin-top: 20px">
+        <ion-row class="parkingRow">
           <div *ngFor="let itemSubArray of itemArray">
             <ion-col size="2" [ngClass]="itemSubArray.IsUsed? 'rowAvailabilityUsed' : 'rowAvailabilityFree'">
               {{itemSubArray.ParkingNumber}}
