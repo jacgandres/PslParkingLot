@@ -4,14 +4,13 @@ import { Router } from '@angular/router';
 import { User } from '../models/User';
 import { DbServiceService, DbFireBaseParkingUsageService, DbFireBaseParkingService } from "../services/export-services";
 import { ParkingUsage, Parking } from '../models/export-models';
-import { CommonMethodsModule, NewDayModule, NetworkModule } from '../modules/export-modules'; 
-import { Subscription } from 'rxjs/internal/Subscription';
-//import { ItemSliding } from 'ionic-angular';
+import { CommonMethodsModule, NewDayModule } from '../modules/export-modules'; 
+import { Subscription } from 'rxjs/internal/Subscription'; 
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  styleUrls: ['home.page.scss'] 
 })
 export class HomePage {
  
@@ -24,7 +23,7 @@ export class HomePage {
   constructor(private router: Router,
     private dbFireServiceUsage: DbFireBaseParkingUsageService,
     private dbFireServiceParking: DbFireBaseParkingService,
-    private commonMethods: CommonMethodsModule, private newDay:NewDayModule, private network:NetworkModule,
+    private commonMethods: CommonMethodsModule, private newDay:NewDayModule, 
     private localDb: DbServiceService) {
 
     this.usagesParking =
@@ -37,12 +36,8 @@ export class HomePage {
     this.spliceBranch = [];
   }
 
-  ngOnInit() {
- 
-    debugger;
-    this.network.GetNetworkConectState();
-    this.network.GetNetworkDisConectState();
-
+  ngOnInit() { 
+    debugger;  
     this.commonMethods.ConsoleLog("Entro ngOnInit:", {});
     this.newDay.SetDay().then((result) =>{ if(result){window.location.reload();} });
   }
