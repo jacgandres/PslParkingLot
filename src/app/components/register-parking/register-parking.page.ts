@@ -39,6 +39,7 @@ export class RegisterParkingPage implements OnInit {
 
   ionViewWillEnter (){
     this.dbLocal.GetUser().then(usr => {  
+       
       this.user = usr;
       this.dbFireServiceParking.GetParkingByFilters(usr.BranchId)
         .then(snapshot => {  

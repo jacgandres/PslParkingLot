@@ -13,8 +13,8 @@ export class DbFireBaseParkingService {
   private parkingList: Parking[] = [];
 
   constructor(private afDB: AngularFireDatabase, private commonMethods: CommonMethodsModule) { }
-  
-  UpdateParking(parking: Parking) { 
+
+  UpdateParking(parking: Parking) {
     return new Promise((resolve) => {
       let strRef = "/Parking/" + parking.ParkingLotId;
       this.afDB.object(strRef)
@@ -25,42 +25,42 @@ export class DbFireBaseParkingService {
     });
   }
 
-  public GetParkings(BranchId:number) { 
+  public GetParkings(BranchId: number) {
     let strRef = "/Parking/";
-    
-    let query =  this.afDB.database.ref(strRef)
-                .orderByChild('BranchId') 
-                .equalTo(BranchId);
+
+    let query = this.afDB.database.ref(strRef)
+      .orderByChild('BranchId')
+      .equalTo(+BranchId);
 
     this.afDB.object(strRef).query = query;
 
     return this.afDB.object(strRef).valueChanges();
   }
 
-  GetParkingByFilters(BranchId:number){ 
-    return new Promise((resolve) =>{
-      
+  GetParkingByFilters(BranchId: number) {
+    return new Promise((resolve) => {
+
       let strRef = "/Parking/";
-  
-      let ref =  this.afDB.database.ref(strRef)
-                            .orderByChild('BranchId') 
-                            .equalTo(BranchId);
-                            
-  
-      ref.on('value', snapshot =>{   
-        let value = snapshot.val(); 
+
+      let ref = this.afDB.database.ref(strRef)
+        .orderByChild('BranchId')
+        .equalTo(+BranchId);
+
+
+      ref.on('value', snapshot => {
+        let value = snapshot.val();
         resolve(value);
       })
     });
-      
+
   }
 
-  GetParkingById(parkingId: string) { 
+  GetParkingById(parkingId: string) {
     return new Promise<Parking>((resolve) => {
       let strRef = "/Parking/" + parkingId;
       const ref = this.afDB.database.ref(strRef);
 
-      ref.on("value", snapshot => { 
+      ref.on("value", snapshot => {
         let value = snapshot.val();
         resolve(value);
       })
@@ -68,25 +68,25 @@ export class DbFireBaseParkingService {
     });
   }
 
-  
-  UpdateParkingsNewDay(BranchId:number ) {
-    return new Promise((resolve)=>{
-      let strRef = "/Parking/";
-  
-      let ref =  this.afDB.database.ref(strRef)
-                            .orderByChild('BranchId')  
-                            .equalTo(BranchId);
 
-      ref.on('value', snapshot =>{
-                
-                let parkings:Parking[] = this.commonMethods.ConvertObjectToArray(snapshot.val());
- 
-                resolve(parkings);
-            });
+  UpdateParkingsNewDay(BranchId: number) {
+    return new Promise((resolve) => {
+      let strRef = "/Parking/";
+
+      let ref = this.afDB.database.ref(strRef)
+        .orderByChild('BranchId')
+        .equalTo(+BranchId);
+
+      ref.on('value', snapshot => {
+
+        let parkings: Parking[] = this.commonMethods.ConvertObjectToArray(snapshot.val());
+
+        resolve(parkings);
+      });
     })
   }
 
-   delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
-   }
+  delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 }
