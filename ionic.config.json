@@ -1,6 +1,8 @@
 {
   "name": "PslParkinLot",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular",
   "id": "2f7d2282"
 }

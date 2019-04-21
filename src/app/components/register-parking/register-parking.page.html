@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="8">
+          <ion-title>
+            <h2>Registro Parqueo</h2>
+          </ion-title>
+        </ion-col>
+        <ion-col size="4" class="return">
+          <ion-chip (click)="Return()" color="light">
+            <ion-label>Volver</ion-label>
+            <ion-icon name="undo"></ion-icon>
+          </ion-chip>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="parkingLot.length > 0">
+    <form [formGroup]="parkinForm" (ngSubmit)="onSubmit()">
+      <fieldset formGroupName="parkinGroup">
+        <ion-item-divider>
+          <ion-thumbnail>
+            <img src="../../../assets/img/Parking-In.PNG">
+          </ion-thumbnail>
+          <ion-label> Registrar uso Parqueadero</ion-label>
+        </ion-item-divider>
+        <ion-item>
+          <ion-label position="floating">Placa Automovil <ion-text color="danger">*</ion-text>
+          </ion-label>
+          <ion-input required formControlName="plate" type="text"></ion-input>
+
+          <ion-item-divider *ngIf="!parkinForm.get('parkinGroup').get('LastName')?.valid &&
+                                    parkinForm.get('parkinGroup').get('LastName')?.touched">
+            <ion-label color="danger">Por favor ingrese su placa</ion-label>
+          </ion-item-divider>
+        </ion-item>
+        <ion-item>
+          <ion-label>Parqueadero</ion-label>
+          <ion-select formControlName="parkingId" okText="Aceptar" cancelText="Cancelar">
+            <ion-select-option value="{{parking.ParkingLotId}}" *ngFor="let parking of parkingLot; let i=index">
+              {{parking.ParkingNumber}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-button block color="primary" type="submit" [disabled]="parkinForm.invalid" expand="block">
+          Parquear
+        </ion-button>
+      </fieldset>
+    </form>
+  </div>
+</ion-content>

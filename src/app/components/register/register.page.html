@@ -1,0 +1,125 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="8">
+          <ion-title>
+            <h2>Registro de usuario</h2>
+          </ion-title>
+        </ion-col>
+        <ion-col size="4" class="return">
+          <ion-chip (click)="Return()" color="light">
+            <ion-label>Volver</ion-label>
+            <ion-icon name="undo"></ion-icon>
+          </ion-chip>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content> 
+  <form [formGroup]="formgroup">
+    <fieldset formGroupName="UserDetails">
+      <ion-item-divider>
+        <ion-thumbnail>
+          <img src="../../../assets/img/contacts.png">
+        </ion-thumbnail>
+        <ion-label> Informacion Personal</ion-label>
+      </ion-item-divider>
+      <ion-list>
+        <ion-item>
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input type="text" formControlName="FirstName"> </ion-input>
+        </ion-item>
+        <ion-item-divider *ngIf="!formgroup.get('UserDetails').get('FirstName')?.valid &&
+                                    formgroup.get('UserDetails').get('FirstName')?.touched">
+          <ion-label color="danger">Por favor ingrese un Nombre en el formato correcto</ion-label>
+        </ion-item-divider>
+        <ion-item>
+          <ion-label position="floating">Apellido</ion-label>
+          <ion-input type="text" formControlName="LastName"> </ion-input>
+        </ion-item>
+        <ion-item-divider *ngIf="!formgroup.get('UserDetails').get('LastName')?.valid &&
+                                    formgroup.get('UserDetails').get('LastName')?.touched">
+          <ion-label color="danger">Por favor ingrese un Apellido en el formato correcto</ion-label>
+        </ion-item-divider>
+        <ion-item>
+            <ion-label>Sede</ion-label>
+            <ion-select formControlName="BranchId" okText="Aceptar" cancelText="Cancelar">
+              <ion-select-option value="{{branch.BranchId}}" *ngFor="let branch of Branches; let i=index">
+                  {{branch.Name}}
+              </ion-select-option>
+            </ion-select>
+        </ion-item>
+      </ion-list>
+    </fieldset>
+    <fieldset formGroupName="CarDetails">
+      <ion-item-divider>
+        <ion-thumbnail>
+          <img src="../../../assets/img/car-parking-signal-icon.png">
+        </ion-thumbnail>
+        <ion-label>Datos Vehiculo</ion-label>
+      </ion-item-divider>
+      <ion-list>
+        <ion-item>
+          <ion-label position="floating">Placa</ion-label>
+          <ion-input type="text" formControlName="Plate"> </ion-input>
+        </ion-item>
+        <ion-item-divider *ngIf="!formgroup.get('CarDetails').get('Plate')?.valid &&
+                  formgroup.get('CarDetails').get('Plate')?.touched">
+          <ion-label color="danger">Por favor ingrese una Placa en el formato correcto</ion-label>
+        </ion-item-divider>
+        <ion-item>
+          <ion-label position="floating">Color</ion-label>
+          <ion-input type="text" formControlName="Color"> </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Marca</ion-label>
+          <ion-input type="text" formControlName="Brand"> </ion-input>
+        </ion-item>
+      </ion-list>
+    </fieldset>
+    <fieldset formGroupName="ContactInfo">
+      <ion-item-divider>
+        <ion-thumbnail>
+          <img src="../../../assets/img/ContacData.png">
+        </ion-thumbnail>
+        <ion-label> Datos de Contacto</ion-label>
+      </ion-item-divider>
+      <ion-list>
+        <ion-item>
+          <ion-label position="floating">Correo</ion-label>
+          <ion-input type="text" formControlName="Email"> </ion-input>
+        </ion-item>
+        <ion-item-divider *ngIf="!formgroup.get('ContactInfo').get('Email')?.valid &&
+                                    formgroup.get('ContactInfo').get('Email')?.touched">
+          <ion-label color="danger">Por favor ingrese un Email en el formato correcto</ion-label>
+        </ion-item-divider>
+        <ion-item>
+          <ion-label position="floating">Clave</ion-label>
+          <ion-input type="password" formControlName="Password"> </ion-input>
+        </ion-item>
+        <ion-item-divider *ngIf="!formgroup.get('ContactInfo').get('Password')?.valid &&
+                  formgroup.get('ContactInfo').get('Password')?.touched">
+          <ion-label color="danger">Por favor ingrese un Clave en el formato correcto</ion-label>
+        </ion-item-divider>
+        <ion-item>
+          <ion-label position="floating">Telefono</ion-label>
+          <ion-input type="number" formControlName="Phone"> </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Skype</ion-label>
+          <ion-input type="text" formControlName="Skype"> </ion-input>
+        </ion-item>
+        <ion-item-divider *ngIf="!formgroup.get('ContactInfo').get('Skype')?.valid &&
+                  formgroup.get('ContactInfo').get('Skype')?.touched">
+          <ion-label color="danger">Por favor ingrese un usuario Skype en el formato correcto</ion-label>
+        </ion-item-divider>
+      </ion-list>
+    </fieldset>
+    <ion-button expand="block" (click)="Register()" [disabled]="formgroup.invalid">
+      Registrarse
+    </ion-button>
+  </form>
+</ion-content>
