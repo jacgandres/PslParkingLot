@@ -37,7 +37,7 @@ export class HomePage {
   }
 
   ngOnInit() { 
-    debugger;  
+     
     this.commonMethods.ConsoleLog("Entro ngOnInit:", {});
     this.newDay.SetDay().then((result) =>{ if(result){window.location.reload();} });
   }
