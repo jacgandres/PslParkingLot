@@ -15,11 +15,11 @@ import { Subscription } from 'rxjs/internal/Subscription';
 })
 export class RegisterParkingPage implements OnInit {
   
-  private paramShowFields = true;
-  private paramParkingLotId:string= null;
-  private parkinForm: FormGroup;
-  private user: User
-  private parkingLot: Parking[];
+  public paramShowFields = true;
+  public paramParkingLotId:string= null;
+  public parkinForm: FormGroup;
+  public user: User
+  public parkingLot: Parking[];
 
   constructor(private router: Router, private route: ActivatedRoute,
     private commonMethods: CommonMethodsModule,
