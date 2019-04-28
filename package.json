@@ -35,6 +35,8 @@
     "cordova-android": "8.0.0",
     "cordova-plugin-camera": "4.0.3",
     "cordova-plugin-device": "^2.0.2",
+    "cordova-plugin-file": "6.0.1",
+    "cordova-plugin-ionic": "5.3.0",
     "cordova-plugin-ionic-keyboard": "^2.1.3",
     "cordova-plugin-ionic-webview": "^3.1.2",
     "cordova-plugin-nativestorage": "2.3.2",
@@ -88,7 +90,15 @@
       },
       "cordova-plugin-ionic-keyboard": {},
       "onesignal-cordova-plugin": {},
-      "cordova-plugin-network-information": {}
+      "cordova-plugin-network-information": {},
+      "cordova-plugin-ionic": {
+        "APP_ID": "2f7d2282",
+        "CHANNEL_NAME": "Master",
+        "UPDATE_METHOD": "background",
+        "UPDATE_API": "https://api.ionicjs.com",
+        "MAX_STORE": "2",
+        "MIN_BACKGROUND_DURATION": "30"
+      }
     },
     "platforms": [
       "android"
