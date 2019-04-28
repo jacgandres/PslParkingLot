@@ -34,19 +34,24 @@
           <ion-input required formControlName="plate" type="text"></ion-input>
 
           <ion-item-divider *ngIf="!parkinForm.get('parkinGroup').get('LastName')?.valid &&
-                              parkinForm.get('parkinGroup').get('LastName')?.touched">
+                                    parkinForm.get('parkinGroup').get('LastName')?.touched">
             <ion-label color="danger">Por favor ingrese su placa</ion-label>
           </ion-item-divider>
         </ion-item>
-        <ion-item>
+        <ion-item *ngIf="paramShowFields == true">
           <ion-label>Parqueadero</ion-label>
           <ion-select formControlName="parkingId" okText="Aceptar" cancelText="Cancelar">
-            <ion-select-option value="{{parking.ParkingLotId}}" *ngFor="let parking of parkingLot; let i=index">
+            <ion-select-option [selected]="parking.ParkingLotId == paramParkingLotId " value="{{parking.ParkingLotId}}"
+              *ngFor="let parking of parkingLot; let i=index">
               {{parking.ParkingNumber}}
             </ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-button block color="primary" type="submit" [disabled]="parkinForm.invalid">
+        <ion-item *ngIf="paramShowFields == false" >
+          <ion-label>Parqueadero </ion-label> 
+          <ion-input formControlName="paramOption" type="text" class="paramsPosition"></ion-input>
+        </ion-item>
+        <ion-button block color="primary" type="submit" [disabled]="parkinForm.invalid" expand="block">
           Parquear
         </ion-button>
       </fieldset>
