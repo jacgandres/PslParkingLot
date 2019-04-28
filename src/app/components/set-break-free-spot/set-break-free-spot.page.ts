@@ -12,10 +12,10 @@ import { isNullOrUndefined } from 'util';
 })
 export class SetBreakFreeSpotPage implements OnInit {
 
-  private user: User;
-  private usedParkingLot: UsedParkingLot;
-  private parking: Parking;
-  private isValid = false;
+  public user: User;
+  public usedParkingLot: UsedParkingLot;
+  public parking: Parking;
+  public isValid = false;
 
   constructor(private router: Router,
     private commonMethods: CommonMethodsModule,

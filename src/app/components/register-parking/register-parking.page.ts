@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CommonMethodsModule } from 'src/app/modules/common-methods/common-methods.module';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User, Parking, UsedParkingLot } from 'src/app/models/export-models';
 import { DbServiceService, DbFireBaseParkingService, DbFireBaseParkingUsageService } from 'src/app/services/export-services';
 import { isNullOrUndefined } from 'util';
+import { Subscription } from 'rxjs/internal/Subscription';
  
 
 @Component({
@@ -13,12 +14,14 @@ import { isNullOrUndefined } from 'util';
   styleUrls: ['./register-parking.page.scss'],
 })
 export class RegisterParkingPage implements OnInit {
- 
-  private parkinForm: FormGroup;
-  private user: User
-  private parkingLot: Parking[];
+  
+  public paramShowFields = true;
+  public paramParkingLotId:string= null;
+  public parkinForm: FormGroup;
+  public user: User
+  public parkingLot: Parking[];
 
-  constructor(private router: Router,
+  constructor(private router: Router, private route: ActivatedRoute,
     private commonMethods: CommonMethodsModule,
     private dbFireServiceParking: DbFireBaseParkingService,
     private dbFireServiceUsedParking: DbFireBaseParkingUsageService,
@@ -27,7 +30,8 @@ export class RegisterParkingPage implements OnInit {
     this.parkinForm = new FormGroup({
       parkinGroup: new FormGroup({
         plate: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]),
-        parkingId: new FormControl('', Validators.required )
+        parkingId: new FormControl('', Validators.required ),
+        paramOption: new FormControl('' ),
       })
     });
 
@@ -38,18 +42,38 @@ export class RegisterParkingPage implements OnInit {
   }
 
   ionViewWillEnter (){
-    this.dbLocal.GetUser().then(usr => {  
-       
+    this.route.queryParams.subscribe(params => { 
+      this.commonMethods.ConsoleLog("this.route.queryParams", params);
+      if (params && params.special) {
+        let parameter = JSON.parse(params.special); 
+        this.paramParkingLotId = parameter.ParkingLotId; 
+        this.paramShowFields = false;
+      }
+    }); 
+  }
+
+  ionViewDidLeave() {
+    this.commonMethods.ConsoleLog("ionViewDidLeave register parking ", {}); 
+    this.cleanForm();
+  }
+
+  ionViewDidEnter (){ 
+    this.dbLocal.GetUser().then(usr => {   
       this.user = usr;
       this.dbFireServiceParking.GetParkingByFilters(usr.BranchId)
         .then(snapshot => {  
           let list: Parking[] = this.commonMethods.ConvertObjectToArray(snapshot); 
-          this.ValidateIfUserAlreadyHaveUsedParkingLot().then(result =>{ 
-            
+          this.ValidateIfUserAlreadyHaveUsedParkingLot().then(result =>{  
             if(result)
             {
+              this.commonMethods.ConsoleLog("ValidateIfUserAlreadyHaveUsedParkingLot ", result);
               this.parkingLot = list.filter(item =>  item.IsUsed == false ); 
               this.parkinForm.controls['parkinGroup'].get("plate").setValue(this.user.Plate.toUpperCase());
+              if(!isNullOrUndefined(this.paramParkingLotId))
+              {
+                this.parkinForm.controls['parkinGroup'].get('parkingId').setValue(this.paramParkingLotId);
+                this.parkinForm.controls['parkinGroup'].get('paramOption').setValue(this.paramParkingLotId);
+              }
             }
             else
             {
@@ -60,6 +84,7 @@ export class RegisterParkingPage implements OnInit {
         });
     });
   }
+
   ValidateIfUserAlreadyHaveUsedParkingLot():Promise<boolean> {
     return new Promise<boolean>((resolve) =>{
       this.dbFireServiceUsedParking.GetParkingUsageByUserId(this.user.UserId).then(result =>{
@@ -72,16 +97,13 @@ export class RegisterParkingPage implements OnInit {
     this.router.navigate(["home"]);
   }
 
-  ionViewDidLeave() {
-    this.commonMethods.ConsoleLog("ionViewDidLeave register parking ", {}); 
-    this.cleanForm();
-  }
 
   cleanForm() {
     this.parkinForm.controls['parkinGroup'].get("plate").setValue("");
   }
 
   onSubmit(){
+ 
     this.getParking(this.parkinForm.controls['parkinGroup'].get("parkingId").value).then( (result:Parking )=>{ 
         let parking = result;
         parking.IsUsed = true;
@@ -92,6 +114,7 @@ export class RegisterParkingPage implements OnInit {
           })
         });  
     });
+
   }
 
   UpdateParking(parking: Parking) {
@@ -112,7 +135,7 @@ export class RegisterParkingPage implements OnInit {
       BranchId: this.user.BranchId,
       IsParked : true,
       Plate : this.parkinForm.controls['parkinGroup'].get("plate").value,
-      ParkingLotId : this.parkinForm.controls['parkinGroup'].get("parkingId").value,
+      ParkingLotId : parseInt(this.parkinForm.controls['parkinGroup'].get("parkingId").value),
       UserId : this.user.UserId
     } 
 
