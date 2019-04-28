@@ -1,12 +1,70 @@
 <ion-header>
-    <ion-toolbar color="primary">
-        <ion-buttons slot="start">
-          <ion-menu-button></ion-menu-button>
-        </ion-buttons>
-    <ion-title>Perfil de Usuario</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="8">
+          <ion-title>
+            <h2>Perfil Usuario</h2>
+          </ion-title>
+        </ion-col>
+        <ion-col size="4" class="return">
+          <ion-chip (click)="Return()" color="light">
+            <ion-label>Volver</ion-label>
+            <ion-icon name="undo"></ion-icon>
+          </ion-chip>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-icon slot="start" name="People"></ion-icon>
+      <ion-label>Datos Personales</ion-label>
+    </ion-item-divider>
+    <ion-item>
+      <ion-icon slot="start" name="contact"></ion-icon>
+      <ion-label><strong> Nombres:</strong> {{user.FirstName}} {{user.LastName}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon slot="start" name="filing"></ion-icon>
+      <ion-label><strong> Email:</strong> {{user.Email}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon slot="start" name="car"></ion-icon>
+      <ion-label><strong> Placa:</strong> {{user.Plate}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon slot="start" name="chatboxes"></ion-icon>
+      <ion-label><strong>Skype:</strong> {{user.Skype}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon slot="start" name="call"></ion-icon>
+      <ion-label><strong>Telefono:</strong> {{user.Phone}}</ion-label>
+    </ion-item>
+  </ion-item-group>
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-icon slot="start" name="apps"></ion-icon>
+      <ion-label>App Version:</ion-label>
+    </ion-item-divider>
+    <ion-item>
+      <ion-label><strong> Version: </strong>{{appVersionInfo.AppName}}</ion-label>
+    </ion-item> 
+    <ion-item> 
+      <ion-label><strong> Paquete: </strong>{{appVersionInfo.PackageName}}</ion-label>
+    </ion-item> 
+    <ion-item> 
+      <ion-label><strong> Codigo: </strong>{{appVersionInfo.VersionCode}}</ion-label>
+    </ion-item> 
+    <ion-item> 
+      <ion-label><strong> Numero: </strong>{{appVersionInfo.VersionNumber}}</ion-label>
+    </ion-item> 
+     
+  </ion-item-group>
 </ion-content>

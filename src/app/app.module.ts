@@ -19,6 +19,7 @@ import { AngularFireDatabaseModule } from "@angular/fire/database";
 import { DatePipe } from '@angular/common'
 
 import { NativeStorage } from '@ionic-native/native-storage/ngx';  
+import { AppVersion } from "@ionic-native/app-version/ngx";
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,7 +38,7 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
     StatusBar,
     SplashScreen,
     DatePipe,
-    NativeStorage,
+    NativeStorage,AppVersion,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

@@ -72,7 +72,7 @@ export class DbFireBaseParkingUsageService {
 
   GetParkingUsageByUserId(UserId: string) {
     return new Promise<UsedParkingLot>((resolve) => {
-      
+
       let strRef = "/Dates/" + this.dateTime + "/" + UserId;
       const ref = this.afDB.database.ref(strRef);
 
@@ -97,11 +97,11 @@ export class DbFireBaseParkingUsageService {
   ValidateIfDayHasRegisters() {
     return new Promise((resolve) => {
       let strRef = "/Dates/" + this.dateTime
-      
+
       this.afDB.database.ref(strRef)
         .limitToFirst(1)
         .on('value', snapshot => {
-          
+
           resolve(isNullOrUndefined(snapshot.val()));
         });
     })
@@ -110,7 +110,7 @@ export class DbFireBaseParkingUsageService {
 
   SaveTemplateDay() {
     return new Promise((resolve) => {
-      
+
       let usedTemplateParking: UsedParkingLot = {
         BranchId: 9999,
         IsParked: false,
@@ -123,4 +123,23 @@ export class DbFireBaseParkingUsageService {
       })
     })
   }
+
+
+  public GetParkinglotById(parkingLotId: number) {
+    return new Promise((resolve) => {
+      
+      let strRef = "/Dates/" + this.dateTime;
+
+      let ref = this.afDB.database.ref(strRef)
+        .orderByChild('ParkingLotId')
+        .equalTo(parkingLotId );
+
+
+      ref.on('value', snapshot => {
+        let value = snapshot.val();
+        resolve(value);
+      })
+    });
+  }
+
 }
