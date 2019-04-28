@@ -15,10 +15,10 @@ import { Subscription } from 'rxjs/internal/Subscription';
 export class HomePage {
 
   private subscriptioParking: Subscription;
-  private user: User;
-  private usagesParking: ParkingUsage;
-  private parkingAvailable: Array<Parking>;
-  private spliceBranch: Array<Parking[]>;
+  public user: User;
+  public usagesParking: ParkingUsage;
+  public parkingAvailable: Array<Parking>;
+  public spliceBranch: Array<Parking[]>;
 
   constructor(private router: Router,
     private dbFireServiceUsage: DbFireBaseParkingUsageService,

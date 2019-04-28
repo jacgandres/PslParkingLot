@@ -12,8 +12,8 @@ import {  Router } from '@angular/router';
 })
 export class ProfilePage implements OnInit {
 
-  private user: User;
-  private appVersionInfo: any;
+  public user: User;
+  public appVersionInfo: any;
 
   constructor(private dbFireBaseService: DbFireBaseServiceService,
     private router:Router,
