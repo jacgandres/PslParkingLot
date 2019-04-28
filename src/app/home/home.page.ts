@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { IonItemSliding } from "@ionic/angular";
-import { Router } from '@angular/router';
+import { IonItemSliding, AlertController } from "@ionic/angular";
+import { Router, NavigationExtras } from '@angular/router';
 import { User } from '../models/User';
 import { DbServiceService, DbFireBaseParkingUsageService, DbFireBaseParkingService, DbFireBaseServiceService } from "../services/export-services";
 import { ParkingUsage, Parking } from '../models/export-models';
@@ -24,6 +24,7 @@ export class HomePage {
     private dbFireServiceUsage: DbFireBaseParkingUsageService,
     private dbFireServiceParking: DbFireBaseParkingService,
     private dbFireBaseService: DbFireBaseServiceService,
+    private alertController: AlertController,
     private commonMethods: CommonMethodsModule, private newDay: NewDayModule,
     private localDb: DbServiceService) {
 
@@ -113,11 +114,11 @@ export class HomePage {
     this.commonMethods.ConsoleLog("ngOnDestroy home ", {});
   }
 
-  GetUsedBy(parkingLotId: number, isUsed: boolean, parkingNumber:string) {
-    if (isUsed) {
-      this.commonMethods.ConsoleLog("Used By", parkingLotId);
+  GetUsedBy(parkingLot: Parking) {
+    if (parkingLot.IsUsed) {
+      this.commonMethods.ConsoleLog("Used By", parkingLot.ParkingLotId);
 
-      this.dbFireServiceUsage.GetParkinglotById(parkingLotId).then((result: any) => {
+      this.dbFireServiceUsage.GetParkinglotById(parkingLot.ParkingLotId).then((result: any) => {
         this.commonMethods.ConsoleLog("Parking used by: ", result);
 
         let unknowResult = this.commonMethods.ConvertObjectToArray(result);
@@ -128,14 +129,48 @@ export class HomePage {
 
         this.dbFireBaseService.GetUser(user).then((usr) => {
 
-          this.commonMethods.presentAlert("Espacio usado por: " + usr.FirstName + " " + usr.LastName + " con skype: " + usr.Skype 
+          this.commonMethods.presentAlert("Espacio usado por: " + usr.FirstName + " " + usr.LastName + " con skype: " + usr.Skype
             + " y placa: " + unknowResult[0].Plate.toUpperCase(),
-            " Parqueadero: " + parkingNumber);
+            " Parqueadero: " + parkingLot.ParkingNumber);
         });
       })
     }
     else {
-      this.commonMethods.presentAlert("Parqueadero sin utilizar.", " Parqueadero: " + parkingNumber);
+      this.ShowModalToRegisterParking(parkingLot.ParkingLotId, parkingLot.ParkingNumber.toString());
     }
   }
+
+  async ShowModalToRegisterParking(parkingLotId: number, parkingNumber: string) {
+
+    const alert = await this.alertController.create({
+      header: 'Aviso!',
+      subHeader: 'Registrar parqueader',
+      message: 'Esta Seguro que desea registrar el parqueadero: <strong>' + parkingNumber +'</strong>?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Registrar',
+          handler: () => {
+            console.log('Confirm Okay');
+            
+            let navigationExtras: NavigationExtras = {
+              queryParams: {
+                special: JSON.stringify({ParkingLotId: parkingLotId})
+              }
+            };
+            this.router.navigate(["register-parking"], navigationExtras);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
 }
