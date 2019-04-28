@@ -127,12 +127,12 @@ export class DbFireBaseParkingUsageService {
 
   public GetParkinglotById(parkingLotId: number) {
     return new Promise((resolve) => {
-
+      
       let strRef = "/Dates/" + this.dateTime;
 
       let ref = this.afDB.database.ref(strRef)
         .orderByChild('ParkingLotId')
-        .equalTo(parkingLotId.toString());
+        .equalTo(parkingLotId );
 
 
       ref.on('value', snapshot => {

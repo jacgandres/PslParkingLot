@@ -115,12 +115,13 @@ export class HomePage {
   }
 
   GetUsedBy(parkingLot: Parking) {
+    
     if (parkingLot.IsUsed) {
       this.commonMethods.ConsoleLog("Used By", parkingLot.ParkingLotId);
 
       this.dbFireServiceUsage.GetParkinglotById(parkingLot.ParkingLotId).then((result: any) => {
         this.commonMethods.ConsoleLog("Parking used by: ", result);
-
+        
         let unknowResult = this.commonMethods.ConvertObjectToArray(result);
 
         let user: User = {

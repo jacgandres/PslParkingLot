@@ -135,7 +135,7 @@ export class RegisterParkingPage implements OnInit {
       BranchId: this.user.BranchId,
       IsParked : true,
       Plate : this.parkinForm.controls['parkinGroup'].get("plate").value,
-      ParkingLotId : this.parkinForm.controls['parkinGroup'].get("parkingId").value,
+      ParkingLotId : parseInt(this.parkinForm.controls['parkinGroup'].get("parkingId").value),
       UserId : this.user.UserId
     } 
 
