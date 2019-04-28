@@ -77,7 +77,8 @@
       <div *ngFor="let itemArray of spliceBranch">
         <ion-row class="parkingRow">
           <div *ngFor="let itemSubArray of itemArray">
-            <ion-col size="2" [ngClass]="itemSubArray.IsUsed? 'rowAvailabilityUsed' : 'rowAvailabilityFree'">
+            <ion-col size="2" (click)="GetUsedBy(itemSubArray.ParkingLotId, itemSubArray.IsUsed, itemSubArray.ParkingNumber)"
+              [ngClass]="itemSubArray.IsUsed? 'rowAvailabilityUsed' : 'rowAvailabilityFree'">
               {{itemSubArray.ParkingNumber}}
             </ion-col>
             <ion-col size="1"> </ion-col>
