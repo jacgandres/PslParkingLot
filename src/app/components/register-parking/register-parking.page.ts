@@ -48,7 +48,8 @@ export class RegisterParkingPage implements OnInit {
             
             if(result)
             {
-              this.parkingLot = list.filter(item =>  item.IsUsed == false );
+              this.parkingLot = list.filter(item =>  item.IsUsed == false ); 
+              this.parkinForm.controls['parkinGroup'].get("plate").setValue(this.user.Plate.toUpperCase());
             }
             else
             {
