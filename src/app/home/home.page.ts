@@ -113,7 +113,7 @@ export class HomePage {
     this.commonMethods.ConsoleLog("ngOnDestroy home ", {});
   }
 
-  GetUsedBy(parkingLotId: number, isUsed: boolean) {
+  GetUsedBy(parkingLotId: number, isUsed: boolean, parkingNumber:string) {
     if (isUsed) {
       this.commonMethods.ConsoleLog("Used By", parkingLotId);
 
@@ -128,11 +128,14 @@ export class HomePage {
 
         this.dbFireBaseService.GetUser(user).then((usr) => {
 
-          this.commonMethods.presentAlert("Espacio usado por: " + usr.FirstName + " " + usr.LastName + " con skype: " + usr.Skype+ " y placa: "+usr.Plate.toUpperCase(),
-            " Parqueadero: " + parkingLotId);
-
+          this.commonMethods.presentAlert("Espacio usado por: " + usr.FirstName + " " + usr.LastName + " con skype: " + usr.Skype 
+            + " y placa: " + unknowResult[0].Plate.toUpperCase(),
+            " Parqueadero: " + parkingNumber);
         });
       })
+    }
+    else {
+      this.commonMethods.presentAlert("Parqueadero sin utilizar.", " Parqueadero: " + parkingNumber);
     }
   }
 }
