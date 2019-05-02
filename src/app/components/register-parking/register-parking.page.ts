@@ -72,7 +72,7 @@ export class RegisterParkingPage implements OnInit {
               if(!isNullOrUndefined(this.paramParkingLotId))
               {
                 this.parkinForm.controls['parkinGroup'].get('parkingId').setValue(this.paramParkingLotId);
-                this.parkinForm.controls['parkinGroup'].get('paramOption').setValue(this.paramParkingLotId);
+                this.parkinForm.controls['parkinGroup'].get('paramOption').setValue(this.GetParkingById(this.paramParkingLotId));
               }
             }
             else
@@ -83,6 +83,13 @@ export class RegisterParkingPage implements OnInit {
           })
         });
     });
+  }
+  GetParkingById(paramParkingLotId: string): any {
+    var parking= this.parkingLot.filter(x =>{
+       return x.ParkingLotId == parseInt(paramParkingLotId);
+    })[0];
+
+    return parking.ParkingNumber;
   }
 
   ValidateIfUserAlreadyHaveUsedParkingLot():Promise<boolean> {
