@@ -49,9 +49,17 @@ export class HomePage {
 
     this.subscriptioParking = this.dbFireServiceParking.GetParkings(this.user.BranchId)
       .subscribe(snapshot => {
-
-        this.commonMethods.ConsoleLog("Entro GetParkings", snapshot);
+        
         this.parkingAvailable = this.commonMethods.ConvertObjectToArray(snapshot);
+
+        var list:Parking[] = this.commonMethods.ConvertObjectToArray(this.parkingAvailable)
+
+        list = list.filter(x =>{
+          return x.BranchId == this.user.BranchId;
+        })
+        
+        this.parkingAvailable = list;
+        this.commonMethods.ConsoleLog("Entro GetParkings",  this.parkingAvailable);
 
         this.commonMethods.ConsoleLog("Entro dbFireServiceParking.GetParkings", {});
         this.dbFireServiceUsage.GetParkingUsage(this.user).then(result => {
