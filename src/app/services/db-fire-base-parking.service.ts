@@ -28,12 +28,11 @@ export class DbFireBaseParkingService {
   public GetParkings(BranchId: number) {
     let strRef = "/Parking/";
 
-    let query = this.afDB.database.ref(strRef)
-      .orderByChild('BranchId')
-      .equalTo(+BranchId);
+    let query = this.afDB.database.ref(strRef)  
+      .orderByChild('ParkingNumber') 
 
     this.afDB.object(strRef).query = query;
-
+     
     return this.afDB.object(strRef).valueChanges();
   }
 
@@ -49,6 +48,13 @@ export class DbFireBaseParkingService {
 
       ref.on('value', snapshot => {
         let value = snapshot.val();
+
+        var list:Parking[] = this.commonMethods.ConvertObjectToArray(value)
+
+        list = list.filter(x =>{
+          return x.BranchId == BranchId;
+        })
+
         resolve(value);
       })
     });
