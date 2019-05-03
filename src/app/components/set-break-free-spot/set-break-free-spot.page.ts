@@ -28,7 +28,7 @@ export class SetBreakFreeSpotPage implements OnInit {
         BranchId: 0,
         IsUsed: false,
         ParkingLotId: 0,
-        ParkingNumber: 0,
+        ParkingNumber: "0001",
         IsChild: false
       }
   }

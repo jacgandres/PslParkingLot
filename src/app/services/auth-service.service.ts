@@ -60,6 +60,7 @@ export class AuthServiceService {
         });
       }).catch(error => {
         this.commonMethods.ConsoleLog("signInWithEmailAndPassword error" , error);
+        this.commonMethods.presentAlert("Error: ["+error.message+"]...","Error en el sistema.")
         reject(error);
       });
     });
@@ -82,9 +83,13 @@ export class AuthServiceService {
     this.commonMethods.ConsoleLog("Funciono alert....",{});
 
      return new Promise((resolve) =>{
-        this.AFAuth.auth.sendPasswordResetEmail(email).then(() => {
+        this.AFAuth.auth.sendPasswordResetEmail(email).then(() => { 
             this.commonMethods.ConsoleLog("sendPasswordResetEmail ",{});
             resolve(true);
+        })
+        .catch(error =>{ 
+          this.commonMethods.ConsoleLog("sendPasswordResetEmail ",error);
+          this.commonMethods.presentAlert("Error: ["+error.message+"]...","Error en el sistema.")
         })
      })
 

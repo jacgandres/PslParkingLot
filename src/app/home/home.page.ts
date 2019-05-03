@@ -145,7 +145,7 @@ export class HomePage {
       })
     }
     else {
-      this.ShowModalToRegisterParking(parkingLot.ParkingLotId, parkingLot.ParkingNumber.toString());
+      this.ShowModalToRegisterParking(parkingLot.ParkingLotId, parkingLot.ParkingNumber);
     }
   }
 

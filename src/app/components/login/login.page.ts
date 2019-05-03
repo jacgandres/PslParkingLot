@@ -68,7 +68,7 @@ export class LoginPage implements OnInit {
 
       this.toast.presentToast(resp.FirstName + " " + resp.LastName + ", has ingresado correctamente.");
       this.router.navigate(['home']);
-    }).catch(err => { alert("Datos incorrectos o no existe el usuario") });
+    }).catch(err => {  });
   }
 
   Register() {
@@ -103,8 +103,7 @@ export class LoginPage implements OnInit {
           text: 'Confirmar',
           handler: data => { 
             console.log(JSON.stringify(data)); 
-            console.log(data.emailModal) 
-
+            console.log(data.emailModal)  
             console.log('Confirm Okay');
             this.authService.RenovatePassword(data.emailModal).then(result => {
               this.commonMethods.presentAlert("Correo enviado!", "Renovacion Contraseña");
