@@ -3,5 +3,5 @@ export interface Parking {
     IsChild: boolean;
     IsUsed: boolean;
     ParkingLotId: number;
-    ParkingNumber: number;
+    ParkingNumber: string;
 }
